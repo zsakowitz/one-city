@@ -49,18 +49,10 @@
   }
 
   .label {
-    @apply block;
+    @apply relative block;
 
     & > p {
-      @apply mb-1 text-z transition;
-    }
-
-    & + .label {
-      @apply mt-4;
-    }
-
-    &:has(:required) > p::after {
-      @apply ml-1 text-red-500/100 content-["*"];
+      @apply pointer-events-none absolute -top-3 left-2 translate-y-0 select-none rounded bg-z-body px-2 text-sm text-z-subtitle transition-all;
     }
   }
 }

@@ -15,7 +15,7 @@
 {:else}
   <form class="m-auto w-96 max-w-full" method="post" use:enhance>
     <label class="label">
-      <p>Name:</p>
+      <p>Name</p>
 
       <input
         class="field w-full"
@@ -26,16 +26,12 @@
       />
     </label>
 
-    <label class="label mt-4">
-      <p>Email address:</p>
+    <label class="label mt-6">
+      <p>Email Address</p>
 
       <input class="field w-full" name="email" required type="email" />
     </label>
 
-    <label class="label">
-      <p>Click to sign up:</p>
-
-      <button class="field w-full">Sign Up</button>
-    </label>
+    <button class="field mt-6 w-full">Sign Up</button>
   </form>
 {/if}
