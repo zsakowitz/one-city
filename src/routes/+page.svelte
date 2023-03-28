@@ -1,4 +1,4 @@
-<h1 class="text-z-nav-title text-4xl mb-8 font-semibold">
+<h1 class="text-z-nav-title mb-8 text-4xl font-semibold">
   One City | Sharing Our Abundance
 </h1>
 

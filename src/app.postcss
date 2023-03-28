@@ -5,49 +5,63 @@
 @layer components {
   .field {
     @apply resize-none rounded-lg border border-z bg-z-field px-3 py-2 text-z shadow ring-z-focus transition;
-  }
 
-  .field:where(input[type="range"]) {
-    @apply relative w-full appearance-none rounded-full bg-transparent p-0;
+    &:where(input[type="range"]) {
+      @apply relative w-full appearance-none rounded-full bg-transparent p-0;
 
-    &::before {
-      @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-pre font-mono text-xs font-light lowercase text-z transition content-[var(--label)];
-      line-height: 1rem;
-    }
+      &::before {
+        @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-pre font-mono text-xs font-light lowercase text-z transition content-[var(--label)];
+        line-height: 1rem;
+      }
 
-    &::-webkit-slider-runnable-track {
-      @apply h-4 w-full cursor-pointer rounded-full bg-z-body transition;
-    }
+      &::-webkit-slider-runnable-track {
+        @apply h-4 w-full cursor-pointer rounded-full bg-z-body transition;
+      }
 
-    &::-moz-range-track {
-      @apply h-4 w-full cursor-pointer rounded-full bg-z-body transition;
-    }
+      &::-moz-range-track {
+        @apply h-4 w-full cursor-pointer rounded-full bg-z-body transition;
+      }
 
-    &::-webkit-slider-thumb {
-      @apply relative z-10 -mt-1 h-6 w-6 cursor-pointer appearance-none rounded-full border border-solid border-z bg-z-body-partial shadow ring-z-focus transition;
-    }
-
-    &::-moz-range-thumb {
-      @apply relative z-10 -mt-1 h-6 w-6 cursor-pointer appearance-none rounded-full border border-solid border-z bg-z-body-partial shadow ring-z-focus transition;
-    }
-
-    &:focus-visible {
       &::-webkit-slider-thumb {
+        @apply relative z-10 -mt-1 h-6 w-6 cursor-pointer appearance-none rounded-full border border-solid border-z bg-z-body-partial shadow ring-z-focus transition;
+      }
+
+      &::-moz-range-thumb {
+        @apply relative z-10 -mt-1 h-6 w-6 cursor-pointer appearance-none rounded-full border border-solid border-z bg-z-body-partial shadow ring-z-focus transition;
+      }
+
+      &:focus-visible::-webkit-slider-thumb {
         @apply border-z-focus ring;
       }
     }
+
+    &:where(textarea) {
+      @apply resize-y;
+    }
+
+    &:where(button:not([disabled])):active {
+      @apply translate-y-px;
+    }
+
+    &:focus-visible {
+      @apply border-z-focus outline-none ring;
+    }
   }
 
-  .field:where(textarea) {
-    @apply resize-y;
-  }
+  .label {
+    @apply block;
 
-  .field:where(button:not([disabled])):active {
-    @apply translate-y-px;
-  }
+    & > p {
+      @apply mb-1 text-z transition;
+    }
 
-  .field:focus-visible {
-    @apply border-z-focus outline-none ring;
+    & + .label {
+      @apply mt-4;
+    }
+
+    &:has(:required) > p::after {
+      @apply ml-1 text-red-500/100 content-["*"];
+    }
   }
 }
 
@@ -59,9 +73,11 @@
 
 html,
 .light {
-  --z-bg-body: theme(colors.slate.100);
-  --z-bg-body-partial: theme(colors.slate.100/0.5);
+  --z-bg-body: theme(colors.white);
+  --z-bg-body-partial: theme(colors.white/0.5);
+  --z-bg-body-selected: theme(colors.slate.200);
   --z-bg-field: theme(colors.white);
+  --z-bg-theme-switcher: theme(colors.slate.50);
 
   --z-border: theme(colors.slate.300);
   --z-border-focus: theme(colors.blue.500);
@@ -72,14 +88,17 @@ html,
   --z-ring-focus: theme(colors.blue.200);
 
   --z-text: theme(colors.slate.600);
-  --z-text-link: theme(colors.blue.500);
-  --z-text-nav-title: theme(colors.slate.800);
+  --z-text-link: theme(colors.blue.600);
+  --z-text-heading: theme(colors.slate.800);
+  --z-text-subtitle: theme(colors.slate.500);
 }
 
 .dark {
   --z-bg-body: theme(colors.slate.900);
   --z-bg-body-partial: theme(colors.slate.900/0.5);
+  --z-bg-body-selected: theme(colors.slate.800);
   --z-bg-field: theme(colors.slate.800);
+  --z-bg-theme-switcher: theme(colors.slate.800);
 
   --z-border: theme(colors.slate.700);
   --z-border-focus: theme(colors.blue.500);
@@ -91,7 +110,8 @@ html,
 
   --z-text: theme(colors.slate.300);
   --z-text-link: theme(colors.blue.500);
-  --z-text-nav-title: theme(colors.slate.200);
+  --z-text-heading: theme(colors.slate.200);
+  --z-text-subtitle: theme(colors.slate.400);
 }
 
 html {

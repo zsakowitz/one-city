@@ -9,3 +9,43 @@ datasource db {
   provider = "mongodb"
   url      = env("ONE_CITY_DATABASE")
 }
+
+model Account {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  creation DateTime @default(now())
+  updated  DateTime @updatedAt
+
+  currentChallenge String?
+  email            String    @unique
+  name             String
+  passkeys         Passkey[]
+
+  verified         Boolean
+  verificationCode String?
+}
+
+enum PasskeyTransport {
+  ble
+  internal
+  nfc
+  usb
+  cable
+  hybrid
+}
+
+model Passkey {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  creation DateTime @default(now())
+  updated  DateTime @default(now()) @updatedAt
+
+  counter              BigInt
+  credentialBackedUp   Boolean
+  credentialDeviceType String
+  credentialId         String             @unique
+  credentialPublicKey  Bytes
+  label                String
+  transports           PasskeyTransport[]
+
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId String  @db.ObjectId
+}

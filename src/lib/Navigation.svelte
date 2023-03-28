@@ -7,11 +7,11 @@
 />
 
 <div
-  class="pointer-events-none fixed top-0 z-10 flex h-12 w-full touch-none select-none justify-center items-center border-b px-6 py-1.5 transition print:hidden backdrop-blur-sm bg-z-body-partial border-b-z"
+  class="pointer-events-none fixed top-0 z-10 flex h-12 w-full touch-none select-none items-center justify-center border-b border-b-z bg-z-body-partial px-6 py-1.5 backdrop-blur-sm transition print:hidden"
 >
-  <div class="flex h-full w-full flex-1 items-center max-w-[1024px]">
+  <div class="flex h-full w-full max-w-[1024px] flex-1 items-center">
     <a
-      class="pointer-events-auto mr-auto font-extralight text-2xl underline decoration-transparent decoration-1 underline-offset-2 transition hover:decoration-current text-z-nav-title z-20 relative border border-transparent focus-visible:border-z-focus ring-z-focus focus-visible:ring focus-visible:outline-none rounded-lg left-[calc(-0.5rem_-_1px)] px-2 py-0.5"
+      class="pointer-events-auto relative left-[calc(-0.5rem_-_1px)] z-20 mr-auto rounded-lg border border-transparent px-2 py-0.5 text-2xl font-extralight text-z-heading underline decoration-transparent decoration-1 underline-offset-2 ring-z-focus transition hover:decoration-current focus-visible:border-z-focus focus-visible:outline-none focus-visible:ring"
       href="/"
     >
       OneCity

@@ -7,7 +7,9 @@ module.exports = {
       customColors: {
         "z-bg-body": "var(--z-bg-body)",
         "z-bg-body-partial": "var(--z-bg-body-partial)",
+        "z-bg-body-selected": "var(--z-bg-body-selected)",
         "z-bg-field": "var(--z-bg-field)",
+        "z-bg-theme-switcher": "var(--z-bg-theme-switcher)",
 
         "z-border": "var(--z-border)",
         "z-border-focus": "var(--z-border-focus)",
@@ -17,7 +19,8 @@ module.exports = {
 
         "z-text": "var(--z-text)",
         "z-text-link": "var(--z-text-link)",
-        "z-text-nav-title": "var(--z-text-nav-title)",
+        "z-text-heading": "var(--z-text-heading)",
+        "z-text-subtitle": "var(--z-text-subtitle)",
       },
       colors: ({ theme }) => ({
         ...theme("customColors"),
@@ -30,7 +33,9 @@ module.exports = {
       backgroundColor: {
         "z-body": "var(--z-bg-body)",
         "z-body-partial": "var(--z-bg-body-partial)",
+        "z-body-selected": "var(--z-bg-body-selected)",
         "z-field": "var(--z-bg-field)",
+        "z-theme-switcher": "var(--z-bg-theme-switcher)",
       },
       borderColor: {
         z: "var(--z-border)",
@@ -50,14 +55,41 @@ module.exports = {
       textColor: {
         z: "var(--z-text)",
         "z-link": "var(--z-text-link)",
-        "z-nav-title": "var(--z-text-nav-title)",
+        "z-heading": "var(--z-text-heading)",
+        "z-subtitle": "var(--z-text-subtitle)",
+      },
+
+      fontFamily: {
+        hebrew: '"Frank Ruhl Libre", "Times New Roman", "Times", serif',
+      },
+      rotate: {
+        60: "60deg",
+      },
+      spacing: {
+        4.5: "1.125rem",
       },
     },
   },
   plugins: [
     /** @type {import("tailwindcss/types/config").PluginCreator} */
-    ({ addVariant, matchUtilities, theme }) => {
+    ({ addVariant, addUtilities, matchUtilities, theme }) => {
       addVariant("xs", "@media (min-width: 400px)")
+
+      addVariant(
+        "prose-details",
+        '& :is(:where(details):not(:where([class~="not-prose"] *)))'
+      )
+
+      addVariant(
+        "prose-summary",
+        '& :is(:where(summary):not(:where([class~="not-prose"] *)))'
+      )
+
+      addUtilities({
+        ".aspect-open-graph": {
+          "aspect-ratio": "40 / 21",
+        },
+      })
 
       matchUtilities(
         {
