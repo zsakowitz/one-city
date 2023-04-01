@@ -16,7 +16,7 @@
 <Navigation />
 
 <div
-  class="mx-6 mt-16 mb-4 flex flex-1 flex-col text-z transition print:mx-0 print:my-0"
+  class="mx-6 mt-16 m -4 flex flex-1 flex-col text-z transition print:mx-0 print:my-0"
 >
   <div
     class="mx-auto flex w-[64rem] max-w-full flex-1 flex-col text-z transition"
