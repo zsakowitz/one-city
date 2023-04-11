@@ -8,6 +8,22 @@ export class Account {
     async (get, data: { email: string; name: string }) => {
       const verificationCode = crypto.randomUUID()
 
+      if (
+        get(
+          await query((db) =>
+            db.account.count({
+              where: { email: data.email },
+            })
+          )
+        ) > 0
+      ) {
+        get(
+          Result.error(
+            "Whoops! Looks like an account with your email already exists."
+          )
+        )
+      }
+
       const account = get(
         await query((db) =>
           db.account.create({
