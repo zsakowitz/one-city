@@ -16,6 +16,7 @@ model Account {
   updated  DateTime @updatedAt
 
   currentChallenge String?
+  currentSession   String    @unique
   email            String    @unique
   name             String
   passkeys         Passkey[]

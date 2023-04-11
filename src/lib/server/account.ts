@@ -17,10 +17,8 @@ export class Account {
           )
         ) > 0
       ) {
-        get(
-          Result.error(
-            "Whoops! Looks like an account with your email already exists."
-          )
+        throw new Error(
+          "Whoops! Looks like an account with your email already exists."
         )
       }
 
@@ -28,6 +26,7 @@ export class Account {
         await query((db) =>
           db.account.create({
             data: {
+              currentSession: crypto.randomUUID(),
               email: data.email,
               name: data.name,
               verified: false,
@@ -67,6 +66,28 @@ Thanks!
       )
     ).map(({ id }) => new Account({ id }))
   }
+
+  static verify = Result.coroutineAsync(async (get, code: string) => {
+    const account = (await Account.find({ verificationCode: code })).unwrapOr(
+      () => {
+        throw new Error("You're already verified! Try logging in.")
+      }
+    )
+
+    const { verified } = get(
+      await account.select({
+        verified: true,
+      })
+    )
+
+    if (verified) {
+      throw new Error("You're already verified! Try logging in.")
+    }
+
+    get(await account.update({ verified: true }))
+
+    return account
+  })
 
   constructor(readonly filter: Prisma.AccountWhereUniqueInput) {}
 

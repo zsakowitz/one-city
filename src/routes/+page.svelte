@@ -1,3 +1,7 @@
+<script lang="ts">
+  export let data
+</script>
+
 <div>
   <h1 class="my-8 text-center text-4xl font-semibold text-z-heading">
     One City | Sharing Our Abundance
@@ -8,3 +12,9 @@
     shall be called a City of Righteousness...”<br /> – Isaiah 1:26
   </p>
 </div>
+
+{#if data.name}
+  <hr class="" />
+
+  <p class="text-center">Welcome, {data.name}!</p>
+{/if}
