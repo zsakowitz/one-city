@@ -18,7 +18,5 @@
 </div>
 
 {#if data.name}
-  <hr />
-
-  <p class="text-center">Welcome, {data.name}!</p>
+  <p class="text-center mt-6 text-3xl font-light">Welcome, {data.name}!</p>
 {/if}
