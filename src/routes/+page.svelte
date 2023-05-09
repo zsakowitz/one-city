@@ -11,6 +11,10 @@
     'אַחֲרֵי־כֵ֗ן יִקָּ֤רֵא לָךְ֙ עִ֣יר הַצֶּ֔דֶק<br /><br />“After that, you
     shall be called a City of Righteousness...”<br /> – Isaiah 1:26
   </p>
+  <div class="justify-center mt-6 flex gap-4">
+    <a class="field" href="/log-in">Log In</a>
+    <a class="field" href="/sign-up">Sign Up</a>
+  </div>
 </div>
 
 {#if data.name}
