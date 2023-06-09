@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let data
+  // export let data
   let story = "Blah, blah, blah, here's our story its sooooooooooo loooooooog This approach is recommended for commands that are conceptually related to only a single subsystem, and is very concise. However, it doesn’t fare well with commands related to more than one subsystem: passing in other subsystem objects is unintuitive and can cause race conditions and circular dependencies, and thus should be avoided. Therefore, this approach is best suited for single-subsystem commands, and should be used only for those cases."
 </script>
 
