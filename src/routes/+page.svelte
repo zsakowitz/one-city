@@ -18,7 +18,7 @@
   <p class="text-left my-6 mx-60">{story}</p>
 </div>
   
-<div class="justify-center mt-6 flex gap-4">
+<!-- <div class="justify-center mt-6 flex gap-4">
   <a class="field" href="/log-in">Log In</a>
   <a class="field" href="/sign-up">Sign Up</a>
 </div>
@@ -26,4 +26,4 @@
 
 {#if data.name}
   <p class="text-center mt-6 text-3xl font-light">Welcome, {data.name}!</p>
-{/if}
+{/if} -->
