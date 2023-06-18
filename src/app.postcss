@@ -10,7 +10,7 @@
       @apply relative w-full appearance-none rounded-full bg-transparent p-0;
 
       &::before {
-        @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-pre font-mono text-xs font-light lowercase text-z transition content-[var(--label)];
+        @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-pre font-mono text-xs font-light lowercase text-z transition content-[var(--label)];
         line-height: 1rem;
       }
 
@@ -46,6 +46,10 @@
     &:focus-visible {
       @apply border-z-focus outline-none ring;
     }
+  }
+
+  .field-modern {
+    @apply rounded-md border-transparent bg-z-body-selected px-2 py-1 shadow-none;
   }
 
   .label {
@@ -113,4 +117,22 @@ html {
 html.no-transition,
 html.no-transition * {
   transition-duration: 0s !important;
+}
+
+.title {
+  @apply relative;
+}
+
+.title::after {
+  @apply field absolute left-1/2 top-[calc(100%_+_0.5rem)] -translate-x-1/2 scale-90 opacity-0 content-[attr(data-title)] hover:scale-100 hover:opacity-100;
+}
+
+.title::before {
+  @apply field absolute left-1/2 top-[calc(100%_+_0.25rem)] -translate-x-1/2 rotate-45 rounded-sm p-1 opacity-0 content-[''] hover:opacity-100;
+
+  box-shadow: 1px 1px 3px 0 rgb(0 0 0 / 0.1), 1px 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.title-line {
+  @apply absolute left-1/2 top-[calc(100%_+_0.25rem_+_1px)] z-10 -translate-x-1/2 rotate-45 rounded-[1px] bg-z-field p-1 content-[''];
 }
