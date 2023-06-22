@@ -1,10 +1,9 @@
-<script lang="ts">
+<script type="ts">
   import { enhance } from "$app/forms"
   import { autoResize } from "$lib/auto-resize"
   import { onMount } from "svelte"
 
   let field: HTMLTextAreaElement
-
   onMount(() => autoResize(field))
 </script>
 
