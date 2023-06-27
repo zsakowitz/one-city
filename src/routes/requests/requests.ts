@@ -121,7 +121,7 @@ export const requests: readonly ItemRequest[] = (
       size: "md",
       urgency: 1,
       id: "9947cc71f16443f1aa022cba3910c94a",
-      creation: new Date(2023, 3, 20),
+      creation: new Date(2022, 3, 20),
     },
     {
       name: "Smart LED TV with streaming capabilities",
@@ -181,7 +181,7 @@ export const requests: readonly ItemRequest[] = (
       size: "sm",
       urgency: 3,
       id: "d3fc6f5e4ff64eaa8b985767ea8c9373",
-      creation: new Date(2023, 3, 10),
+      creation: new Date(2022, 9, 10),
     },
     {
       name: "Queensized platform bed with storage",

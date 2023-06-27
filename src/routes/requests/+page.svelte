@@ -32,22 +32,20 @@
       requests.sort((a, b) => a.urgency - b.urgency)
     }
 
-    if (sortingDirection == "asc") {
-      requests.sort((a, b) =>
-        a[sortingField] < b[sortingField]
-          ? -1
-          : a[sortingField] > b[sortingField]
-          ? 1
-          : 0
-      )
-    } else {
-      requests.sort((a, b) =>
-        a[sortingField] < b[sortingField]
-          ? 1
-          : a[sortingField] > b[sortingField]
-          ? -1
-          : 0
-      )
+    requests.sort((a, b) =>
+      a[sortingField] < b[sortingField]
+        ? -1
+        : a[sortingField] > b[sortingField]
+        ? 1
+        : 0
+    )
+
+    if (sortingField == "size") {
+      requests.reverse()
+    }
+
+    if (sortingDirection == "dsc") {
+      requests.reverse()
     }
 
     if (query) {
