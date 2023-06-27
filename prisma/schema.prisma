@@ -50,3 +50,28 @@ model Passkey {
   account   Account @relation(fields: [accountId], references: [id])
   accountId String  @db.ObjectId
 }
+
+model ItemRequest {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  creation DateTime @default(now())
+  updated  DateTime @default(now()) @updatedAt
+
+  description String
+  name        String
+  requested   DateTime
+  requestor   String
+  size        Size
+  urgency     Urgency
+}
+
+enum Size {
+  Small
+  Medium
+  Large
+}
+
+enum Urgency {
+  Urgent
+  SomewhatUrgent
+  NotUrgent
+}

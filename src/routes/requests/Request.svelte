@@ -1,42 +1,44 @@
 <script lang="ts" context="module">
   export interface ItemRequest {
+    id: string
+    creation: Date
+
+    description: string
     name: string
+    nameHTML: string
+    requestor: string
+    requestorHTML: string
     size: "sm" | "md" | "lg"
     urgency: 1 | 2 | 3
   }
 </script>
 
 <script lang="ts">
-  import Fa from "$lib/Fa.svelte"
-  import {
-    faChevronDown,
-    faChevronUp,
-    faWarning,
-  } from "@fortawesome/free-solid-svg-icons"
+  import { dateToString } from "$lib/date-to-string"
+  import Urgency from "./Urgency.svelte"
 
   export let request: ItemRequest
 
   export let showUrgency: boolean
 </script>
 
-<div
-  class="flex items-center gap-2 rounded bg-z-body-selected px-2 py-1 transition first:rounded-t-xl last:rounded-b-xl"
+<a
+  href={"/request/" + request.id}
+  class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,12rem),5.5rem] items-center gap-2 overflow-hidden rounded bg-z-body-selected px-2 py-1 transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
 >
-  <p class="text-z transition">{request.name}</p>
+  <p class="relative text-z transition [&_b]:text-z-heading">
+    {@html request.nameHTML}
+  </p>
+
+  <p class="text-z transition [&_b]:text-z-heading">
+    {@html request.requestorHTML}
+  </p>
+
+  <p class="text-z transition">
+    {dateToString(request.creation)}
+  </p>
 
   {#if showUrgency}
-    <Fa
-      class="ml-auto h-4 w-4"
-      title={request.urgency == 1
-        ? "Urgent"
-        : request.urgency == 2
-        ? "Somewhat Urgent"
-        : "Not Urgent"}
-      icon={request.urgency == 1
-        ? faWarning
-        : request.urgency == 2
-        ? faChevronUp
-        : faChevronDown}
-    />
+    <Urgency class="relative ml-auto h-4 w-4" urgency={request.urgency} />
   {/if}
-</div>
+</a>
