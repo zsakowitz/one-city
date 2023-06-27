@@ -1,6 +1,4 @@
 <script lang="ts">
-  // export let data
-  let story = "Blah, blah, blah, here's our story its sooooooooooo loooooooog This approach is recommended for commands that are conceptually related to only a single subsystem, and is very concise. However, it doesn’t fare well with commands related to more than one subsystem: passing in other subsystem objects is unintuitive and can cause race conditions and circular dependencies, and thus should be avoided. Therefore, this approach is best suited for single-subsystem commands, and should be used only for those cases."
 </script>
 
 <div>
@@ -15,7 +13,12 @@
 </div>
 
 <div>
-  <p class="text-left my-6 mx-60">{story}</p>
+  <h2 class="my-8 mx-60 text-left text-2xl font-semibold text-z-heading">What is One City?</h2>
+  <p class="text-left -my-4 mx-60">One City is a project to connect the GLIDE and Kitchen communities. In partnership with the GLIDE Walk-In-Center, we are supporting GLIDE clients furnish their homes. <br>
+
+The walk-in center works with hundreds of bright, righteous people each week who are wrestling with poverty, addiction and/or mental health challenges. Many of these people are trying to meet their basic needs—shelter, furniture, clothing.
+
+Our monthly Team Captains & GLIDE staff have created a database of needed items. If you have any of the items and are ready to donate, email us here and monthly team captain will reach out with next steps.</p>
 </div>
   
 <!-- <div class="justify-center mt-6 flex gap-4">
