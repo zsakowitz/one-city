@@ -4,6 +4,7 @@
 - To donate an item
 - To see all requests
 - To see all donations
+- Story of OneCity
 
 # Other things
 
