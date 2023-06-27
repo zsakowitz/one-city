@@ -5,27 +5,55 @@
   import UrgencyFilter from "./UrgencyFilter.svelte"
   import { requests } from "./requests"
 
+  let sizeFilter: "sm" | "md" | "lg" | undefined
   let urgencyFilter: 1 | 2 | 3 | undefined
-
   let query = ""
+
+  let sortingField: "urgency" | "size" | "creation" | "requestor" | "name" =
+    "urgency"
+
+  let sortingDirection: "asc" | "dsc" = "asc"
 
   function makeRequestsList(
     requests: ItemRequest[],
+    sizeFilter: "sm" | "md" | "lg" | undefined,
     urgencyFilter: 1 | 2 | 3 | undefined,
-    query: string
+    query: string,
+    sortingDirection: "asc" | "dsc",
+    sortingField: "urgency" | "size" | "creation" | "requestor" | "name"
   ) {
+    if (sizeFilter) {
+      requests = requests.filter((x) => x.size == sizeFilter)
+    }
+
     if (urgencyFilter) {
       requests = requests.filter((x) => x.urgency == urgencyFilter)
     } else {
       requests.sort((a, b) => a.urgency - b.urgency)
     }
 
+    if (sortingDirection == "asc") {
+      requests.sort((a, b) =>
+        a[sortingField] < b[sortingField]
+          ? -1
+          : a[sortingField] > b[sortingField]
+          ? 1
+          : 0
+      )
+    } else {
+      requests.sort((a, b) =>
+        a[sortingField] < b[sortingField]
+          ? 1
+          : a[sortingField] > b[sortingField]
+          ? -1
+          : 0
+      )
+    }
+
     if (query) {
       const results = fuzzy.go(query, requests, {
         keys: ["name", "requestor"],
       })
-
-      console.log(results)
 
       requests = results.map((result) => ({
         ...result.obj,
@@ -38,7 +66,25 @@
     return requests
   }
 
-  $: visibleRequests = makeRequestsList(requests.slice(), urgencyFilter, query)
+  $: visibleRequests = makeRequestsList(
+    requests.slice(),
+    sizeFilter,
+    urgencyFilter,
+    query,
+    sortingDirection,
+    sortingField
+  )
+
+  function makeSorter(field: typeof sortingField) {
+    return () => {
+      if (sortingField == field) {
+        sortingDirection = sortingDirection == "asc" ? "dsc" : "asc"
+      } else {
+        sortingDirection = "asc"
+        sortingField = field
+      }
+    }
+  }
 </script>
 
 <h1 class="mb-4 text-lg font-semibold text-z-heading transition">
@@ -59,22 +105,49 @@
 <div class="flex flex-col gap-1">
   {#if visibleRequests.length}
     <div
-      class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,12rem),5.5rem] items-center gap-2 overflow-hidden rounded px-2 py-1 font-semibold transition first:rounded-t-xl last:rounded-b-xl"
+      class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem] items-center gap-2 overflow-hidden rounded px-2 py-1 font-semibold transition first:rounded-t-xl last:rounded-b-xl"
     >
-      <p class="relative text-z transition [&_b]:text-z-heading">Item</p>
+      <button
+        class="relative text-left text-z transition [&_b]:text-z-heading"
+        on:click={makeSorter("name")}
+      >
+        Item
+      </button>
 
-      <p class="text-z transition">Requestor</p>
+      <button
+        class="text-left text-z transition"
+        on:click={makeSorter("requestor")}>Requestor</button
+      >
 
-      <p class="text-z transition">Date Requested</p>
+      <button
+        class="text-left text-z transition"
+        on:click={makeSorter("creation")}
+      >
+        Date Requested
+      </button>
 
-      <p class="text-right text-z transition">
+      <button
+        class="text-right text-z transition"
+        on:click={makeSorter("size")}
+      >
+        {sizeFilter == null ? "Size" : ""}
+      </button>
+
+      <button
+        class="text-right text-z transition"
+        on:click={makeSorter("urgency")}
+      >
         {urgencyFilter == null ? "Urgency" : ""}
-      </p>
+      </button>
     </div>
   {/if}
 
   {#each visibleRequests as request}
-    <Request {request} showUrgency={urgencyFilter == null} />
+    <Request
+      {request}
+      showSize={sizeFilter == null}
+      showUrgency={urgencyFilter == null}
+    />
   {:else}
     {#if query || urgencyFilter}
       <p>No items matched. Try adjusting your search query and filters.</p>

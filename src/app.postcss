@@ -124,15 +124,15 @@ html.no-transition * {
 }
 
 .title::after {
-  @apply field absolute left-1/2 top-[calc(100%_+_0.5rem)] -translate-x-1/2 scale-90 opacity-0 content-[attr(data-title)] hover:scale-100 hover:opacity-100;
+  @apply field pointer-events-none absolute left-1/2 top-[calc(100%_+_0.5rem)] -translate-x-1/2 scale-90 opacity-0 content-[attr(data-title)] hover:scale-100 hover:opacity-100;
 }
 
 .title::before {
-  @apply field absolute left-1/2 top-[calc(100%_+_0.25rem)] -translate-x-1/2 rotate-45 rounded-sm p-1 opacity-0 content-[''] hover:opacity-100;
+  @apply field pointer-events-none absolute left-1/2 top-[calc(100%_+_0.25rem)] -translate-x-1/2 rotate-45 rounded-sm p-1 opacity-0 content-[''] hover:opacity-100;
 
   box-shadow: 1px 1px 3px 0 rgb(0 0 0 / 0.1), 1px 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
 .title-line {
-  @apply absolute left-1/2 top-[calc(100%_+_0.25rem_+_1px)] z-10 -translate-x-1/2 rotate-45 rounded-[1px] bg-z-field p-1 content-[''];
+  @apply pointer-events-none absolute left-1/2 top-[calc(100%_+_0.25rem_+_1px)] z-10 -translate-x-1/2 rotate-45 rounded-[1px] bg-z-field p-1 content-[''];
 }
