@@ -134,5 +134,9 @@ html.no-transition * {
 }
 
 .title-line {
-  @apply pointer-events-none absolute left-1/2 top-[calc(100%_+_0.25rem_+_1px)] z-10 -translate-x-1/2 rotate-45 rounded-[1px] bg-z-field p-1 content-[''];
+  @apply pointer-events-none absolute left-1/2 top-[calc(100%_+_0.25rem_+_1px)] z-10 -translate-x-1/2 rotate-45 rounded-[1px] bg-z-field p-1 opacity-0 transition content-[''];
+}
+
+.title:hover .title-line {
+  @apply opacity-100;
 }
