@@ -12,13 +12,12 @@
   </p>
 </div>
 
-<div>
-  <h2 class="my-8 mx-60 text-left text-2xl font-semibold text-z-heading">What is One City?</h2>
-  <p class="text-left -my-4 mx-60">One City is a project to connect the GLIDE and Kitchen communities. In partnership with the GLIDE Walk-In-Center, we are supporting GLIDE clients furnish their homes. <br>
-
-The walk-in center works with hundreds of bright, righteous people each week who are wrestling with poverty, addiction and/or mental health challenges. Many of these people are trying to meet their basic needs—shelter, furniture, clothing.
-
-Our monthly Team Captains & GLIDE staff have created a database of needed items. If you have any of the items and are ready to donate, email us here and monthly team captain will reach out with next steps.</p>
+<div class="mx-60">
+  <h2 class="text-left font-semibold text-2xl my-4">What is One City?</h2>
+  <p class="my-2">One City is a project to connect the GLIDE and Kitchen communities. In partnership with the <a class="underline" href="https://www.glide.org/program/walk-in-center/" target="_blank">GLIDE Walk-In-Center</a>, we are supporting GLIDE clients furnish their homes. </p>
+  <p class="my-2">The walk-in center works with hundreds of bright, righteous people each week who are wrestling with poverty, addiction and/or mental health challenges. Many of these people are trying to meet their basic needs—shelter, furniture, clothing.</p>
+  <p class="my-2">Our monthly Team Captains &amp; GLIDE staff have created a database of needed items. If you have any of the items and are ready to donate, email us <a class="underline" href="mailto:onecity@thekitchensf.org">here</a> and monthly team captain will reach out with next steps. </p>
+  <p class="my-2"><em>One City is orchestrated by a group of loving volunteers from The Kitchen and Avital Raff, The Kitchen’s Community Organizer. </em></p>
 </div>
   
 <!-- <div class="justify-center mt-6 flex gap-4">
