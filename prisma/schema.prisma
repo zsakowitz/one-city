@@ -56,10 +56,12 @@ model ItemRequest {
   creation DateTime @default(now())
   updated  DateTime @default(now()) @updatedAt
 
+  completed   Boolean @default(false)
+  contact     String
   description String
+  location    String
   name        String
-  requested   DateTime
-  requestor   String
+  requester   String
   size        Size
   urgency     Urgency
 }
@@ -71,7 +73,7 @@ enum Size {
 }
 
 enum Urgency {
-  Urgent
-  SomewhatUrgent
-  NotUrgent
+  HighPriority
+  Standard
+  LowPriority
 }

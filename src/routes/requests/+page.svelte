@@ -1,26 +1,29 @@
 <script lang="ts">
   import { highlightFuzzySearchResult } from "$lib/highlight-fuzzy-result"
+  import type { ItemRequestJSON } from "$lib/server/item-request"
   import fuzzy from "fuzzysort"
-  import Request, { type ItemRequest } from "./Request.svelte"
+  import Request from "./Request.svelte"
   import UrgencyFilter from "./UrgencyFilter.svelte"
-  import { requests } from "./requests"
 
   let sizeFilter: "sm" | "md" | "lg" | undefined
   let urgencyFilter: 1 | 2 | 3 | undefined
   let query = ""
 
-  let sortingField: "urgency" | "size" | "creation" | "requestor" | "name" =
+  let sortingField: "urgency" | "size" | "creation" | "requester" | "name" =
     "urgency"
+
+  export let data
+  const requests = data.list
 
   let sortingDirection: "asc" | "dsc" = "asc"
 
   function makeRequestsList(
-    requests: ItemRequest[],
+    requests: ItemRequestJSON[],
     sizeFilter: "sm" | "md" | "lg" | undefined,
     urgencyFilter: 1 | 2 | 3 | undefined,
     query: string,
     sortingDirection: "asc" | "dsc",
-    sortingField: "urgency" | "size" | "creation" | "requestor" | "name"
+    sortingField: "urgency" | "size" | "creation" | "requester" | "name"
   ) {
     if (sizeFilter) {
       requests = requests.filter((x) => x.size == sizeFilter)
@@ -50,14 +53,14 @@
 
     if (query) {
       const results = fuzzy.go(query, requests, {
-        keys: ["name", "requestor"],
+        keys: ["name", "requester"],
       })
 
       requests = results.map((result) => ({
         ...result.obj,
         nameHTML: highlightFuzzySearchResult(result[0]) ?? result.obj.nameHTML,
-        requestorHTML:
-          highlightFuzzySearchResult(result[1]) ?? result.obj.requestorHTML,
+        requesterHTML:
+          highlightFuzzySearchResult(result[1]) ?? result.obj.requesterHTML,
       }))
     }
 
@@ -114,7 +117,7 @@
 
       <button
         class="text-left text-z transition"
-        on:click={makeSorter("requestor")}>Requestor</button
+        on:click={makeSorter("requester")}>requester</button
       >
 
       <button

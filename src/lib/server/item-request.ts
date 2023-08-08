@@ -10,13 +10,19 @@ export interface ItemRequestJSON {
   description: string
   name: string
   nameHTML: string
-  requestor: string
-  requestorHTML: string
+  requester: string
+  requesterHTML: string
   size: "sm" | "md" | "lg"
   urgency: 1 | 2 | 3
 }
 
 export class ItemRequest {
+  static async create(data: Prisma.ItemRequestCreateInput) {
+    return (
+      await query((db) => db.itemRequest.create({ data, select: { id: true } }))
+    ).map(({ id }) => new ItemRequest({ id }))
+  }
+
   static async find(filter: Prisma.ItemRequestWhereInput) {
     return (
       await query((db) =>
@@ -54,12 +60,11 @@ export class ItemRequest {
 
   async toJSON(): Promise<Result<ItemRequestJSON>> {
     const data = await this.select({
-      id: true,
       creation: true,
       description: true,
+      id: true,
       name: true,
-      requested: true,
-      requestor: true,
+      requester: true,
       size: true,
       urgency: true,
     })
@@ -67,10 +72,14 @@ export class ItemRequest {
     return data.map((value) => ({
       ...value,
       nameHTML: escapeHTML(value.name),
-      requestorHTML: escapeHTML(value.requestor),
+      requesterHTML: escapeHTML(value.requester),
       size: value.size == "Small" ? "sm" : value.size == "Large" ? "lg" : "md",
       urgency:
-        value.urgency == "NotUrgent" ? 3 : value.urgency == "Urgent" ? 1 : 2,
+        value.urgency == "LowPriority"
+          ? 3
+          : value.urgency == "HighPriority"
+          ? 1
+          : 2,
     }))
   }
 }
@@ -84,6 +93,33 @@ export class ItemRequestList {
         select,
         where: this.filter,
       })
+    )
+  }
+
+  async toJSON(): Promise<Result<ItemRequestJSON[]>> {
+    const data = await this.select({
+      creation: true,
+      description: true,
+      id: true,
+      name: true,
+      requester: true,
+      size: true,
+      urgency: true,
+    })
+
+    return data.map((value) =>
+      value.map((item) => ({
+        ...item,
+        nameHTML: escapeHTML(item.name),
+        requesterHTML: escapeHTML(item.requester),
+        size: item.size == "Small" ? "sm" : item.size == "Large" ? "lg" : "md",
+        urgency:
+          item.urgency == "LowPriority"
+            ? 3
+            : item.urgency == "HighPriority"
+            ? 1
+            : 2,
+      }))
     )
   }
 }

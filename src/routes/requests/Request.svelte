@@ -1,24 +1,10 @@
-<script lang="ts" context="module">
-  export interface ItemRequest {
-    id: string
-    creation: Date
-
-    description: string
-    name: string
-    nameHTML: string
-    requestor: string
-    requestorHTML: string
-    size: "sm" | "md" | "lg"
-    urgency: 1 | 2 | 3
-  }
-</script>
-
 <script lang="ts">
   import { dateToString } from "$lib/date-to-string"
+  import type { ItemRequestJSON } from "$lib/server/item-request"
   import Size from "./Size.svelte"
   import Urgency from "./Urgency.svelte"
 
-  export let request: ItemRequest
+  export let request: ItemRequestJSON
   export let showSize: boolean
   export let showUrgency: boolean
 </script>
@@ -32,7 +18,7 @@
   </p>
 
   <p class="text-z transition [&_b]:text-z-heading">
-    {@html request.requestorHTML}
+    {@html request.requesterHTML}
   </p>
 
   <p class="text-z transition">

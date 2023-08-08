@@ -37,6 +37,10 @@
 
     &:where(textarea) {
       @apply resize-y;
+
+      &:where(.auto-resize) {
+        @apply h-[2.625rem] resize-none;
+      }
     }
 
     &:where(button:not([disabled])):active {

@@ -1,58 +1,102 @@
 <script lang="ts">
   import { enhance } from "$app/forms"
+  import RadioInput from "$lib/RadioInput.svelte"
   import { autoResize } from "$lib/auto-resize"
-  import { onMount } from "svelte"
+  import Error from "../../+error.svelte"
 
-  let field: HTMLTextAreaElement
-
-  onMount(() => autoResize(field))
+  export let form
 </script>
 
-<form class="m-auto w-96 max-w-full" method="post" use:enhance>
-  <label class="label mt-6">
-    <p>Title</p>
+{#if form && !form.ok}
+  <Error message={form.reason} status={503} />
+{:else}
+  <form
+    class="m-auto flex w-[48rem] max-w-full flex-col items-center gap-6"
+    method="post"
+    use:enhance
+  >
+    <div
+      class="grid w-96 max-w-full grid-cols-1 gap-6 md:w-full md:grid-cols-2"
+    >
+      <div class="flex flex-col gap-6">
+        <label class="label">
+          <p>Title</p>
 
-    <input
-      class="field w-full"
-      maxlength="80"
-      name="title"
-      required
-      type="email"
-    />
-  </label>
+          <input class="field w-full" maxlength="80" name="name" required />
+        </label>
 
-  <label class="label mt-6">
-    <p>Description</p>
+        <label class="label">
+          <p>Description</p>
 
-    <textarea
-      class="field w-full"
-      name="description"
-      required
-      bind:this={field}
-    />
-  </label>
+          <textarea
+            class="auto-resize field w-full"
+            name="description"
+            required
+            use:autoResize
+          />
+        </label>
 
-  <label class="label mt-6">
-    <p>Contact Information</p>
+        <div class="label grid grid-cols-3 gap-2">
+          <p>Urgency</p>
 
-    <textarea class="field w-full" name="contact" required bind:this={field} />
-  </label>
+          <RadioInput name="urgency" label="High Priority" value="1" />
 
-  <label class="label mt-6">
-    <p>Arrival Urgency</p>
+          <RadioInput checked name="urgency" label="Standard" value="2" />
 
-    <input name="urgency" type="radio" value="Within a year" />
-    Within a year
+          <RadioInput name="urgency" label="Low Priority" value="3" />
+        </div>
 
-    <input name="urgency" type="radio" value="Within 3 months" />
-    Within 3 months
+        <div class="label grid grid-cols-3 gap-2">
+          <p>Size</p>
 
-    <input name="urgency" type="radio" value="Within 1 month" />
-    Within 1 month
+          <RadioInput name="size" label="Small" value="sm" />
 
-    <input name="urgency" type="radio" value="Within 2 weeks" />
-    Within 2 weeks
-  </label>
+          <RadioInput checked name="size" label="Medium" value="md" />
 
-  <button class="field mt-6 w-full">Add Item Request</button>
-</form>
+          <RadioInput name="size" label="Large" value="lg" />
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-6">
+        <label class="label">
+          <p>Requester's Name</p>
+
+          <textarea
+            class="auto-resize field w-full"
+            name="requester"
+            required
+            use:autoResize
+          />
+        </label>
+
+        <label class="label relative -top-1">
+          <p>Requester's Contact Info</p>
+
+          <textarea
+            class="auto-resize field w-full"
+            name="contact"
+            required
+            use:autoResize
+          />
+        </label>
+
+        <label class="label relative -top-2">
+          <p>Location</p>
+
+          <textarea
+            class="auto-resize field w-full"
+            name="location"
+            required
+            use:autoResize
+          />
+        </label>
+      </div>
+    </div>
+
+    <button class="field w-96 max-w-full">Add Item Request</button>
+
+    {#if form && form.ok}
+      <p class="w-96 max-w-full text-center">Created “{form.name}.”</p>
+    {/if}
+  </form>
+{/if}
