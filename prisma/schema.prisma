@@ -15,9 +15,11 @@ model Account {
   creation DateTime @default(now())
   updated  DateTime @updatedAt
 
+  admin            Boolean   @default(false)
   currentChallenge String?
   currentSession   String    @unique
   email            String    @unique
+  password         String
   name             String
   passkeys         Passkey[]
 

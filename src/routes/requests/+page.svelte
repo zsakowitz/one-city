@@ -99,8 +99,14 @@
   bind:value={query}
 />
 
-<div class="mb-6 flex w-min flex-col gap-2">
+<div class="mb-6 flex gap-2">
   <UrgencyFilter bind:urgency={urgencyFilter} />
+
+  {#if data.admin}
+    <a class="field field-modern ml-auto" href="/request/create"
+      >Create Request</a
+    >
+  {/if}
 </div>
 
 <div class="flex flex-col gap-1">
@@ -117,7 +123,7 @@
 
       <button
         class="text-left text-z transition"
-        on:click={makeSorter("requester")}>requester</button
+        on:click={makeSorter("requester")}>Requester</button
       >
 
       <button

@@ -1,17 +1,35 @@
 import { Account } from "$lib/server/account"
 import { getFormData } from "$lib/server/get-form"
+import { verifyPassword } from "$lib/server/hash.js"
 import { unwrapOr500 } from "$lib/server/unwrap.js"
 import { redirect } from "@sveltejs/kit"
 
 export const actions = {
   async default(event) {
-    const { email } = await getFormData(event.request, ["email"] as const)
+    const { email, password } = await getFormData(event.request, [
+      "email",
+      "password",
+    ] as const)
 
     const account = new Account({ email })
 
-    const { currentSession } = unwrapOr500(
-      await account.select({ currentSession: true })
-    )
+    try {
+      var { currentSession, password: hashedPassword } = unwrapOr500(
+        await account.select({ currentSession: true, password: true })
+      )
+    } catch {
+      return {
+        ok: false,
+        reason: "No account with that email exists.",
+      } as const
+    }
+
+    if (!(await verifyPassword(password, hashedPassword))) {
+      return {
+        ok: false,
+        reason: "Your password is incorrect.",
+      } as const
+    }
 
     event.cookies.set("1city_current_session", currentSession, {
       path: "/",

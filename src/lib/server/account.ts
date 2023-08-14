@@ -1,11 +1,12 @@
 import type { Prisma } from "@prisma/client"
 import { Result } from "../result"
 import { query } from "./database"
+import { hashPassword } from "./hash"
 import { send } from "./mail"
 
 export class Account {
   static create = Result.coroutineAsync(
-    async (get, data: { email: string; name: string }) => {
+    async (get, data: { email: string; name: string; password: string }) => {
       const verificationCode = crypto.randomUUID()
 
       if (
@@ -23,13 +24,14 @@ export class Account {
       }
 
       const account = get(
-        await query((db) =>
+        await query(async (db) =>
           db.account.create({
             data: {
               currentSession: crypto.randomUUID(),
               email: data.email,
               name: data.name,
               verified: false,
+              password: await hashPassword(data.password),
               verificationCode,
             },
           })

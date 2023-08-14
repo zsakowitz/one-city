@@ -9,7 +9,7 @@
 </script>
 
 <button
-  class="rounded-sm bg-z-body-selected p-2 first:rounded-l-lg last:rounded-r-lg"
+  class="rounded-sm bg-z-body-selected p-2 transition first:rounded-l-lg last:rounded-r-lg"
   class:opacity-30={inactive}
   on:click={onClick}
 >
