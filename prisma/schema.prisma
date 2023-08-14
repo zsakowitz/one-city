@@ -77,12 +77,3 @@ enum Urgency {
   Standard
   LowPriority
 }
-
-model Session {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  creation DateTime @default(now())
-  updated  DateTime @default(now()) @updatedAt
-
-  session String
-  info    String
-}
