@@ -86,10 +86,86 @@
       }
     }
   }
+
+  let hidden: HTMLSelectElement
+
+  function setHidden(node: HTMLSelectElement) {
+    hidden = node
+  }
+
+  let select: HTMLSelectElement
+
+  function setSelect(node: HTMLSelectElement) {
+    select = node
+
+    resizeSelect()
+  }
+
+  function resizeSelect(_?: any) {
+    if (!hidden || !select) {
+      return
+    }
+
+    hidden.children[0]!.textContent =
+      select.selectedOptions[0]?.textContent || ""
+    hidden.style.display = "block"
+    select.style.width = hidden.clientWidth + "px"
+    hidden.style.display = "none"
+    select.style.display = "block"
+  }
 </script>
 
 <h1 class="mb-4 text-lg font-semibold text-z-heading transition">
-  All Requests
+  <select use:setHidden>
+    <option>
+      {data.completed == "any"
+        ? "All Requests"
+        : data.completed == "true"
+        ? "Completed Requests"
+        : "Active Requests"}
+    </option>
+  </select>
+
+  <select
+    class="hidden"
+    value={data.completed == "any"
+      ? "any"
+      : data.completed == "true"
+      ? "true"
+      : "false"}
+    use:setSelect
+    use:resizeSelect
+    on:input={() => {
+      resizeSelect()
+
+      if (!select) {
+        return
+      }
+
+      const value =
+        select.value == "any"
+          ? "any"
+          : select.value == "true"
+          ? "true"
+          : "false"
+
+      const oldValue =
+        data.completed == "any"
+          ? "any"
+          : data.completed == "true"
+          ? "true"
+          : "false"
+
+      if (value != oldValue) {
+        location.href =
+          value == "false" ? "/requests" : "/requests?completed=" + value
+      }
+    }}
+  >
+    <option value="any">All Requests</option>
+    <option value="true">Completed Requests</option>
+    <option value="false">Active Requests</option>
+  </select>
 </h1>
 
 <input

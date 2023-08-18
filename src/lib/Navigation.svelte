@@ -22,7 +22,10 @@
       href="/requests">All Requests</a
     >
 
-    <span class="relative left-[calc(-0.5rem_-_1px)]">&middot;</span>
+    <span
+      class="relative left-[calc(-0.5rem_-_1px)] text-z opacity-50 transition"
+      >&middot;</span
+    >
 
     <a
       class="pointer-events-auto relative left-[calc(-0.5rem_-_1px)] mr-auto rounded-lg border border-transparent px-2 py-0.5 text-z underline decoration-transparent decoration-1 underline-offset-2 ring-z-focus transition hover:decoration-current focus-visible:border-z-focus focus-visible:outline-none focus-visible:ring"

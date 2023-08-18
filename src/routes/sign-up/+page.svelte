@@ -62,7 +62,7 @@
       />
     </label>
 
-    {#if form && !form.ok}
+    {#if defaultform && !form.ok}
       <p class="mt-6 text-center">Error: {form.reason}</p>
     {/if}
 

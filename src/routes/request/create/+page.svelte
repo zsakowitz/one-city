@@ -4,7 +4,13 @@
   import { autoResize } from "$lib/auto-resize"
   import Error from "../../+error.svelte"
 
+  export let data
   export let form
+
+  const urgency =
+    data.urgency == "HighPriority" ? 1 : data.urgency == "LowPriority" ? 3 : 2
+
+  const size = data.size == "Large" ? "lg" : data.size == "Small" ? "sm" : "md"
 </script>
 
 {#if form && !form.ok}
@@ -15,6 +21,8 @@
     method="post"
     use:enhance
   >
+    <input type="hidden" name="id" value={data?.id || ""} />
+
     <div
       class="grid w-96 max-w-full grid-cols-1 gap-6 md:w-full md:grid-cols-2"
     >
@@ -22,7 +30,13 @@
         <label class="label">
           <p>Title</p>
 
-          <input class="field w-full" maxlength="80" name="name" required />
+          <input
+            class="field w-full"
+            maxlength="80"
+            name="name"
+            required
+            value={data?.name || ""}
+          />
         </label>
 
         <label class="label">
@@ -33,27 +47,58 @@
             name="description"
             required
             use:autoResize
+            value={data?.description || ""}
           />
         </label>
 
         <div class="label grid grid-cols-3 gap-2">
           <p>Urgency</p>
 
-          <RadioInput name="urgency" label="High Priority" value="1" />
+          <RadioInput
+            checked={urgency == 1}
+            name="urgency"
+            label="High Priority"
+            value="1"
+          />
 
-          <RadioInput checked name="urgency" label="Standard" value="2" />
+          <RadioInput
+            checked={urgency == 2}
+            name="urgency"
+            label="Standard"
+            value="2"
+          />
 
-          <RadioInput name="urgency" label="Low Priority" value="3" />
+          <RadioInput
+            checked={urgency == 3}
+            name="urgency"
+            label="Low Priority"
+            value="3"
+          />
         </div>
 
         <div class="label grid grid-cols-3 gap-2">
           <p>Size</p>
 
-          <RadioInput name="size" label="Small" value="sm" />
+          <RadioInput
+            checked={size == "sm"}
+            name="size"
+            label="Small"
+            value="sm"
+          />
 
-          <RadioInput checked name="size" label="Medium" value="md" />
+          <RadioInput
+            checked={size == "md"}
+            name="size"
+            label="Medium"
+            value="md"
+          />
 
-          <RadioInput name="size" label="Large" value="lg" />
+          <RadioInput
+            checked={size == "lg"}
+            name="size"
+            label="Large"
+            value="lg"
+          />
         </div>
       </div>
 
@@ -66,6 +111,7 @@
             name="requester"
             required
             use:autoResize
+            value={data?.requester || ""}
           />
         </label>
 
@@ -77,6 +123,7 @@
             name="contact"
             required
             use:autoResize
+            value={data?.contact || ""}
           />
         </label>
 
@@ -88,6 +135,7 @@
             name="location"
             required
             use:autoResize
+            value={data?.location || ""}
           />
         </label>
       </div>

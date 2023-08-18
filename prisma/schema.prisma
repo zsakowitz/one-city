@@ -58,7 +58,7 @@ model ItemRequest {
   creation DateTime @default(now())
   updated  DateTime @default(now()) @updatedAt
 
-  completed   Boolean @default(false)
+  completed   DateTime?
   contact     String
   description String
   location    String

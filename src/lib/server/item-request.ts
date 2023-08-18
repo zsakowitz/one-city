@@ -5,8 +5,9 @@ import { query } from "./database"
 
 export interface ItemRequestJSON {
   id: string
-  creation: Date
+  creation: number
 
+  completed: number | null
   contact: string
   description: string
   location: string
@@ -60,9 +61,18 @@ export class ItemRequest {
     )
   }
 
+  delete() {
+    return query((db) =>
+      db.itemRequest.delete({
+        where: this.filter,
+      })
+    )
+  }
+
   async toJSON(): Promise<Result<ItemRequestJSON>> {
     const data = await this.select({
       creation: true,
+      completed: true,
       contact: true,
       description: true,
       id: true,
@@ -75,6 +85,8 @@ export class ItemRequest {
 
     return data.map((value) => ({
       ...value,
+      creation: value.creation.getTime(),
+      completed: value.completed?.getTime() ?? null,
       nameHTML: escapeHTML(value.name),
       requesterHTML: escapeHTML(value.requester),
       size: value.size == "Small" ? "sm" : value.size == "Large" ? "lg" : "md",
@@ -102,6 +114,7 @@ export class ItemRequestList {
 
   async toJSON(): Promise<Result<ItemRequestJSON[]>> {
     const data = await this.select({
+      completed: true,
       contact: true,
       creation: true,
       description: true,
@@ -116,6 +129,8 @@ export class ItemRequestList {
     return data.map((value) =>
       value.map((item) => ({
         ...item,
+        creation: item.creation.getTime(),
+        completed: item.completed?.getTime() ?? null,
         nameHTML: escapeHTML(item.name),
         requesterHTML: escapeHTML(item.requester),
         size: item.size == "Small" ? "sm" : item.size == "Large" ? "lg" : "md",

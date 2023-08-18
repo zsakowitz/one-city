@@ -2,9 +2,17 @@ import { ItemRequestList } from "$lib/server/item-request.js"
 import { unwrapOr500 } from "$lib/server/unwrap.js"
 
 export async function load(event) {
-  const list = new ItemRequestList({ completed: false })
+  const completed = event.url.searchParams.get("completed")
 
-  const json = unwrapOr500(await list.toJSON())
+  const list = new ItemRequestList({})
+
+  let json = unwrapOr500(await list.toJSON())
+
+  if (completed == "true") {
+    json = json.filter((x) => x.completed)
+  } else if (completed != "any") {
+    json = json.filter((x) => !x.completed)
+  }
 
   let admin = false
 
@@ -14,5 +22,5 @@ export async function load(event) {
     ))
   }
 
-  return { admin, list: json }
+  return { admin, completed, list: json }
 }

@@ -22,7 +22,7 @@
   </p>
 
   <p class="text-z transition">
-    {dateToString(request.creation)}
+    {dateToString(new Date(request.creation))}
   </p>
 
   {#if showSize}
