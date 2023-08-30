@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
   import { enhance } from "$app/forms"
+  import type { ActionData } from "./$types"
 
-  export let form
+  export let form: ActionData
 </script>
 
 {#if form && form.ok}

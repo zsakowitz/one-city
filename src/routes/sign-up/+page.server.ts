@@ -1,6 +1,7 @@
 import { Account } from "$lib/server/account"
 import { getFormData } from "$lib/server/get-form"
 import { unwrapOr500 } from "$lib/server/unwrap"
+import type { Actions } from "./$types"
 
 export const actions = {
   async default(event) {
@@ -17,4 +18,4 @@ export const actions = {
 
     return { ok: true } as const
   },
-}
+} satisfies Actions

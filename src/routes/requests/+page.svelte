@@ -2,6 +2,7 @@
   import { highlightFuzzySearchResult } from "$lib/highlight-fuzzy-result"
   import type { ItemRequestJSON } from "$lib/server/item-request"
   import fuzzy from "fuzzysort"
+  import type { PageData } from "./$types"
   import Request from "./Request.svelte"
   import UrgencyFilter from "./UrgencyFilter.svelte"
 
@@ -12,7 +13,7 @@
   let sortingField: "urgency" | "size" | "creation" | "requester" | "name" =
     "urgency"
 
-  export let data
+  export let data: PageData
   const requests = data.list
 
   let sortingDirection: "asc" | "dsc" = "asc"

@@ -1,6 +1,7 @@
 import { Account } from "$lib/server/account"
+import type { Handle } from "@sveltejs/kit"
 
-export async function handle({ event, resolve }) {
+export async function handle({ event, resolve }: Parameters<Handle>[0]) {
   const currentSession = event.cookies.get("1city_current_session")
 
   if (currentSession) {

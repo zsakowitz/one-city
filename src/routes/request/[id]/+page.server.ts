@@ -1,8 +1,12 @@
 import { ItemRequest } from "$lib/server/item-request.js"
 import { unwrapOr500 } from "$lib/server/unwrap.js"
 import { error } from "@sveltejs/kit"
+import type { Actions, PageServerLoad } from "./$types.js"
 
-export async function load({ locals, params: { id } }) {
+export async function load({
+  locals,
+  params: { id },
+}: Parameters<PageServerLoad>[0]) {
   let admin = false
 
   if (
@@ -62,4 +66,4 @@ export const actions = {
       json: unwrapOr500(await request.toJSON()),
     }
   },
-}
+} satisfies Actions

@@ -3,9 +3,10 @@
   import RadioInput from "$lib/RadioInput.svelte"
   import { autoResize } from "$lib/auto-resize"
   import Error from "../../+error.svelte"
+  import type { ActionData, PageData } from "./$types.js"
 
-  export let data
-  export let form
+  export let data: PageData
+  export let form: ActionData
 
   const urgency =
     data.urgency == "HighPriority" ? 1 : data.urgency == "LowPriority" ? 3 : 2
@@ -116,19 +117,29 @@
         </label>
 
         <label class="label relative -top-1">
-          <p>Requester's Contact Info</p>
+          <p>Requester's Phone Number</p>
 
-          <textarea
+          <input
             class="auto-resize field w-full"
-            name="contact"
-            required
-            use:autoResize
-            value={data?.contact || ""}
+            name="tel"
+            type="tel"
+            value={data?.tel || ""}
+          />
+        </label>
+
+        <label class="label relative -top-1">
+          <p>Requester's Email</p>
+
+          <input
+            class="auto-resize field w-full"
+            name="email"
+            type="email"
+            value={data?.email || ""}
           />
         </label>
 
         <label class="label relative -top-2">
-          <p>Location</p>
+          <p>Address of Recipient</p>
 
           <textarea
             class="auto-resize field w-full"

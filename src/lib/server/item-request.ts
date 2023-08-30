@@ -8,7 +8,7 @@ export interface ItemRequestJSON {
   creation: number
 
   completed: number | null
-  contact: string
+  email: string | null
   description: string
   location: string
   name: string
@@ -16,6 +16,7 @@ export interface ItemRequestJSON {
   requester: string
   requesterHTML: string
   size: "sm" | "md" | "lg"
+  tel: string | null
   urgency: 1 | 2 | 3
 }
 
@@ -73,13 +74,14 @@ export class ItemRequest {
     const data = await this.select({
       creation: true,
       completed: true,
-      contact: true,
+      email: true,
       description: true,
       id: true,
       location: true,
       name: true,
       requester: true,
       size: true,
+      tel: true,
       urgency: true,
     })
 
@@ -115,7 +117,7 @@ export class ItemRequestList {
   async toJSON(): Promise<Result<ItemRequestJSON[]>> {
     const data = await this.select({
       completed: true,
-      contact: true,
+      email: true,
       creation: true,
       description: true,
       id: true,
@@ -123,6 +125,7 @@ export class ItemRequestList {
       name: true,
       requester: true,
       size: true,
+      tel: true,
       urgency: true,
     })
 

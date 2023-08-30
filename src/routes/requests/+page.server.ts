@@ -1,7 +1,8 @@
 import { ItemRequestList } from "$lib/server/item-request.js"
 import { unwrapOr500 } from "$lib/server/unwrap.js"
+import type { PageServerLoad } from "./$types"
 
-export async function load(event) {
+export async function load(event: Parameters<PageServerLoad>[0]) {
   const completed = event.url.searchParams.get("completed")
 
   const list = new ItemRequestList({})

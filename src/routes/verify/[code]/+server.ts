@@ -1,8 +1,9 @@
 import { Account } from "$lib/server/account"
 import { unwrapOr500 } from "$lib/server/unwrap.js"
 import { redirect } from "@sveltejs/kit"
+import type { RequestEvent } from "./$types"
 
-export async function GET({ cookies, params: { code } }) {
+export async function GET({ cookies, params: { code } }: RequestEvent) {
   const account = unwrapOr500(await Account.verify(code))
 
   const { currentSession } = unwrapOr500(

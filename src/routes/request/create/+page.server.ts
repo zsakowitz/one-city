@@ -2,8 +2,9 @@ import { extract } from "$lib/server/extract.js"
 import { ItemRequest } from "$lib/server/item-request.js"
 import { unwrapOr500 } from "$lib/server/unwrap.js"
 import { error, redirect } from "@sveltejs/kit"
+import type { Actions, PageServerLoad } from "./$types.js"
 
-export async function load(event) {
+export async function load(event: Parameters<PageServerLoad>[0]) {
   if (!event.locals.account) {
     throw error(403, "You need to log in to access this page.")
   }
@@ -18,12 +19,14 @@ export async function load(event) {
     const info = await new ItemRequest({ id }).select({
       contact: true,
       description: true,
+      email: true,
       id: true,
       name: true,
-      requester: true,
       location: true,
-      urgency: true,
+      requester: true,
       size: true,
+      tel: true,
+      urgency: true,
     })
 
     if (!info.ok) {
@@ -88,4 +91,4 @@ export const actions = {
       return { ok: false, reason: item.reason } as const
     }
   },
-}
+} satisfies Actions

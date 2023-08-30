@@ -3,6 +3,7 @@ import { getFormData } from "$lib/server/get-form"
 import { verifyPassword } from "$lib/server/hash.js"
 import { unwrapOr500 } from "$lib/server/unwrap.js"
 import { redirect } from "@sveltejs/kit"
+import type { Actions } from "./$types"
 
 export const actions = {
   async default(event) {
@@ -39,4 +40,4 @@ export const actions = {
 
     throw redirect(303, "/")
   },
-}
+} satisfies Actions

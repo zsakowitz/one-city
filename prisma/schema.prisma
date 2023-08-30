@@ -59,12 +59,13 @@ model ItemRequest {
   updated  DateTime @default(now()) @updatedAt
 
   completed   DateTime?
-  contact     String
+  email       String?
   description String
   location    String
   name        String
   requester   String
   size        Size
+  tel         String?
   urgency     Urgency
 }
 
