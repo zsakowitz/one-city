@@ -18,6 +18,7 @@ export interface ItemRequestJSON {
   size: "sm" | "md" | "lg"
   tel: string | null
   urgency: 1 | 2 | 3
+  url: string | null
 }
 
 export class ItemRequest {
@@ -83,6 +84,7 @@ export class ItemRequest {
       size: true,
       tel: true,
       urgency: true,
+      url: true,
     })
 
     return data.map((value) => ({
@@ -143,6 +145,7 @@ export class ItemRequestList {
             : item.urgency == "HighPriority"
             ? 1
             : 2,
+        url: true,
       }))
     )
   }

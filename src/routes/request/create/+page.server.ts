@@ -17,7 +17,6 @@ export async function load(event: Parameters<PageServerLoad>[0]) {
 
   if (id) {
     const info = await new ItemRequest({ id }).select({
-      contact: true,
       description: true,
       email: true,
       id: true,
@@ -27,6 +26,7 @@ export async function load(event: Parameters<PageServerLoad>[0]) {
       size: true,
       tel: true,
       urgency: true,
+      url: true,
     })
 
     if (!info.ok) {
@@ -50,14 +50,16 @@ export const actions = {
     }
 
     const data = await extract(event.request, [
-      "contact",
       "description",
+      "email",
       "id",
       "name",
       "requester",
       "location",
-      "urgency",
       "size",
+      "tel",
+      "urgency",
+      "url",
     ] as const)
 
     const info = {

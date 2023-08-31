@@ -29,10 +29,6 @@
       &::-moz-range-thumb {
         @apply relative z-10 -mt-1 h-6 w-6 cursor-pointer appearance-none rounded-full border border-solid border-z bg-z-body-partial shadow ring-z-focus transition;
       }
-
-      &:focus-visible::-webkit-slider-thumb {
-        @apply border-z-focus ring;
-      }
     }
 
     &:where(textarea) {
@@ -46,9 +42,18 @@
     &:where(button:not([disabled])):active {
       @apply translate-y-px;
     }
+  }
 
+  .field,
+  .field-focus {
     &:focus-visible {
       @apply border-z-focus outline-none ring;
+    }
+
+    &:where(input[type="range"]) {
+      &:focus-visible::-webkit-slider-thumb {
+        @apply border-z-focus ring;
+      }
     }
   }
 
@@ -94,10 +99,10 @@ html,
 }
 
 .dark {
-  --z-bg-body: theme(colors.slate.900);
-  --z-bg-body-partial: theme(colors.slate.900/0.5);
+  --z-bg-body: theme(colors.slate.950);
+  --z-bg-body-partial: theme(colors.slate.950/0.5);
   --z-bg-body-selected: theme(colors.slate.800);
-  --z-bg-field: theme(colors.slate.800);
+  --z-bg-field: theme(colors.slate.900);
   --z-bg-theme-switcher: theme(colors.slate.800);
 
   --z-border: theme(colors.slate.700);

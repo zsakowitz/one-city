@@ -12,6 +12,9 @@
     data.urgency == "HighPriority" ? 1 : data.urgency == "LowPriority" ? 3 : 2
 
   const size = data.size == "Large" ? "lg" : data.size == "Small" ? "sm" : "md"
+
+  let email = data?.email
+  let tel = data?.tel
 </script>
 
 {#if form && !form.ok}
@@ -52,6 +55,17 @@
           />
         </label>
 
+        <label class="label">
+          <p>Related Link (Amazon, picture, etc.)</p>
+
+          <input
+            class="auto-resize field w-full"
+            name="url"
+            type="url"
+            value={data?.url || ""}
+          />
+        </label>
+
         <div class="label grid grid-cols-3 gap-2">
           <p>Urgency</p>
 
@@ -74,31 +88,6 @@
             name="urgency"
             label="Low Priority"
             value="3"
-          />
-        </div>
-
-        <div class="label grid grid-cols-3 gap-2">
-          <p>Size</p>
-
-          <RadioInput
-            checked={size == "sm"}
-            name="size"
-            label="Small"
-            value="sm"
-          />
-
-          <RadioInput
-            checked={size == "md"}
-            name="size"
-            label="Medium"
-            value="md"
-          />
-
-          <RadioInput
-            checked={size == "lg"}
-            name="size"
-            label="Large"
-            value="lg"
           />
         </div>
       </div>
@@ -149,13 +138,42 @@
             value={data?.location || ""}
           />
         </label>
+
+        <div class="label grid grid-cols-3 gap-2">
+          <p>Size</p>
+
+          <RadioInput
+            checked={size == "sm"}
+            name="size"
+            label="Small"
+            value="sm"
+          />
+
+          <RadioInput
+            checked={size == "md"}
+            name="size"
+            label="Medium"
+            value="md"
+          />
+
+          <RadioInput
+            checked={size == "lg"}
+            name="size"
+            label="Large"
+            value="lg"
+          />
+        </div>
       </div>
     </div>
 
-    <button class="field w-96 max-w-full">Add Item Request</button>
+    <button class="field w-96 max-w-full"
+      >{data?.url ? "Edit" : "Create"} Item Request</button
+    >
 
     {#if form && form.ok}
-      <p class="w-96 max-w-full text-center">Created “{form.name}.”</p>
+      <p class="w-96 max-w-full text-center">
+        {data?.url ? "Edited" : "Created"} “{form.name}.”
+      </p>
     {/if}
   </form>
 {/if}

@@ -117,7 +117,10 @@
 </script>
 
 <h1 class="mb-4 text-lg font-semibold text-z-heading transition">
-  <select use:setHidden>
+  <select
+    class="field-focus rounded border border-transparent bg-transparent text-z underline underline-offset-2 transition focus:decoration-transparent"
+    use:setHidden
+  >
     <option>
       {data.completed == "any"
         ? "All Requests"
@@ -128,7 +131,7 @@
   </select>
 
   <select
-    class="hidden"
+    class="field-focus hidden rounded border border-transparent bg-transparent text-z underline underline-offset-2 transition focus:decoration-transparent"
     value={data.completed == "any"
       ? "any"
       : data.completed == "true"

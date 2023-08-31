@@ -67,6 +67,7 @@ model ItemRequest {
   size        Size
   tel         String?
   urgency     Urgency
+  url         String?
 }
 
 enum Size {

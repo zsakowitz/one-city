@@ -5,7 +5,7 @@
 </script>
 
 <div>
-  <h1 class="my-8 text-center text-4xl font-semibold text-z-heading">
+  <h1 class="my-8 text-center text-4xl font-semibold text-z-heading transition">
     One City | Sharing Our Abundance
   </h1>
 
@@ -17,7 +17,7 @@
 
 {#if data && data.name}
   <p
-    class="mx-auto mb-4 w-[36rem] max-w-full rounded-lg bg-z-body-selected px-8 py-4 text-center text-lg font-light"
+    class="mx-auto mb-4 w-[36rem] max-w-full rounded-lg bg-z-body-selected px-8 py-4 text-center text-lg font-light text-z transition"
   >
     Welcome, {data.name}!
   </p>
