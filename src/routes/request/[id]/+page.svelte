@@ -1,20 +1,15 @@
 <script lang="ts">
   import { enhance } from "$app/forms"
   import { escapeHTML } from "$lib/escape-html"
-  import { onMount } from "svelte"
   import Error from "../../+error.svelte"
   import Urgency from "../../requests/Urgency.svelte"
   import type { ActionData, PageData } from "./$types.js"
-  import "./x-frame-bypass.js"
-  import { register } from "./x-frame-bypass.js"
 
   export let data: PageData
   export let form: ActionData
 
   const { admin, id } = data
   const request = form?.json || data.request
-
-  onMount(register)
 </script>
 
 {#if request}
@@ -62,7 +57,7 @@
       <p class="relative mb-1 text-sm text-z-subtitle">Item description:</p>
 
       <div class="flex w-full flex-col">
-        {#each (request.description + "\nworld").split("\n") as line}
+        {#each request.description.split("\n") as line}
           <p
             class="ml-1 hyphens-auto border-l border-l-z pl-3 pt-2 text-base/7 underline-offset-2 first:pt-1 last:pb-1 [&_a:hover]:decoration-z-text-link [&_a]:text-z-link [&_a]:underline [&_a]:decoration-transparent [&_a]:transition"
           >
@@ -78,31 +73,14 @@
       </div>
 
       {#if data.request.url}
-        <p class="relative mb-1 mt-8 text-sm text-z-subtitle">Related link:</p>
+        <p class="relative mb-1 mt-8 text-sm text-z-subtitle transition">
+          Related link:
+        </p>
 
         <a
-          class="relative h-96 w-full select-none overflow-clip rounded-lg"
-          href={data.request.url}
+          class="text-z-link underline decoration-transparent underline-offset-2 transition hover:decoration-inherit"
+          href={data.request.url}>{data.request.url}</a
         >
-          <iframe
-            on:scroll={(event) => {
-              event.preventDefault()
-            }}
-            class="pointer-events-none h-[200%] w-[200%] origin-top-left scale-50"
-            is="x-frame-bypass"
-            src={data.request.url}
-            tabindex="-1"
-            title="Related link"
-          />
-
-          <div
-            class="field absolute bottom-2 left-2 flex w-[calc(100%_-_1rem)] flex-col rounded bg-z-field px-2 py-1 text-z transition"
-          >
-            <p class="truncate">
-              {data.request.url}
-            </p>
-          </div>
-        </a>
       {/if}
     </div>
 

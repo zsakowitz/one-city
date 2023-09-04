@@ -12,9 +12,6 @@
     data.urgency == "HighPriority" ? 1 : data.urgency == "LowPriority" ? 3 : 2
 
   const size = data.size == "Large" ? "lg" : data.size == "Small" ? "sm" : "md"
-
-  let email = data?.email
-  let tel = data?.tel
 </script>
 
 {#if form && !form.ok}
@@ -112,6 +109,7 @@
             class="auto-resize field w-full"
             name="tel"
             type="tel"
+            pattern={"^[\\+]*[\\(]?\\d{3}[\\)]?[\\-\\s\\.\\/0-9]{7}$"}
             value={data?.tel || ""}
           />
         </label>
