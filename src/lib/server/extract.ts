@@ -1,11 +1,9 @@
 import { error } from "@sveltejs/kit"
 
-export async function extract<T extends readonly string[]>(
-  request: Request,
+export function extractFromFormData<T extends readonly string[]>(
+  data: FormData,
   keys: T
 ) {
-  const data = await request.formData()
-
   const output: any = {}
 
   for (const key of keys) {
@@ -19,4 +17,13 @@ export async function extract<T extends readonly string[]>(
   }
 
   return output as Record<T[number], string>
+}
+
+export async function extract<T extends readonly string[]>(
+  request: Request,
+  keys: T
+) {
+  const data = await request.formData()
+
+  return extractFromFormData(data, keys)
 }

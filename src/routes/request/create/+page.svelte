@@ -56,7 +56,7 @@
           <p>Related Link (Amazon, picture, etc.)</p>
 
           <input
-            class="auto-resize field w-full"
+            class="field w-full"
             name="url"
             type="url"
             value={data?.url || ""}
@@ -91,13 +91,13 @@
 
       <div class="flex flex-col gap-6">
         <label class="label">
-          <p>Requester's Name</p>
+          <p>Requester's Full Name</p>
 
-          <textarea
-            class="auto-resize field w-full"
+          <input
+            class="field w-full"
             name="requester"
+            type="text"
             required
-            use:autoResize
             value={data?.requester || ""}
           />
         </label>
@@ -106,7 +106,7 @@
           <p>Requester's Phone Number</p>
 
           <input
-            class="auto-resize field w-full"
+            class="field w-full"
             name="tel"
             type="tel"
             pattern={"^[\\+]*[\\(]?\\d{3}[\\)]?[\\-\\s\\.\\/0-9]{7}$"}
@@ -118,7 +118,7 @@
           <p>Requester's Email</p>
 
           <input
-            class="auto-resize field w-full"
+            class="field w-full"
             name="email"
             type="email"
             value={data?.email || ""}

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from "$app/forms"
+  import { autoResize } from "$lib/auto-resize"
   import { escapeHTML } from "$lib/escape-html"
   import Error from "../../+error.svelte"
   import Urgency from "../../requests/Urgency.svelte"
@@ -10,6 +11,9 @@
 
   const { admin, id } = data
   const request = form?.json || data.request
+
+  let email = ""
+  let tel = ""
 </script>
 
 {#if request}
@@ -32,29 +36,50 @@
     </div>
   </h1>
 
-  <p class="text-sm text-z-subtitle">
-    Requested on {new Date(request.creation).toLocaleDateString(undefined, {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    })}
-  </p>
-
-  <p class="mt-1 text-sm text-z-subtitle">
-    {#if request.completed}
-      Completed on {new Date(request.completed).toLocaleDateString(undefined, {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })}
-    {:else}
-      Active request
-    {/if}
-  </p>
-
-  <div class="mt-8 grid gap-x-6 gap-y-4 md:grid-cols-2">
+  <div class="grid flex-1 gap-x-6 gap-y-4 md:grid-cols-2">
     <div class="flex max-w-md flex-col">
-      <p class="relative mb-1 text-sm text-z-subtitle">Item description:</p>
+      <p class="text-sm text-z-subtitle">
+        Requested on {new Date(request.creation).toLocaleDateString(undefined, {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })}
+      </p>
+
+      <p class="mt-1 text-sm text-z-subtitle">
+        {#if request.completed}
+          Completed on {new Date(request.completed).toLocaleDateString(
+            undefined,
+            {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }
+          )}
+        {:else}
+          Active request
+        {/if}
+      </p>
+
+      <p class="mt-1 text-sm text-z-subtitle">
+        {request.urgency == 1
+          ? "Urgent"
+          : request.urgency == 3
+          ? "Not urgent"
+          : "Somewhat urgent"}
+      </p>
+
+      <p class="mt-1 text-sm text-z-subtitle">
+        {request.size == "sm"
+          ? "Small item"
+          : request.size == "lg"
+          ? "Large item"
+          : "Medium size"}
+      </p>
+
+      <p class="relative mb-1 mt-8 text-sm text-z-subtitle">
+        Item description:
+      </p>
 
       <div class="flex w-full flex-col">
         {#each request.description.split("\n") as line}
@@ -84,78 +109,174 @@
       {/if}
     </div>
 
-    {#if admin}
-      <div
-        class="ml-auto flex max-w-md flex-col gap-4 rounded-lg bg-z-body-selected px-6 pb-6 pt-4 transition"
-      >
-        <p class="border-b border-z pb-3 text-center italic text-z transition">
-          This box is only visible to OneCity admins.
-        </p>
+    <div
+      class="ml-auto mt-8 flex h-full w-full flex-1 flex-col md:mt-0 md:max-w-md md:pl-8"
+    >
+      {#if !import.meta.env.DEV && admin}
+        <div
+          class="mb-8 flex w-full flex-col gap-4 rounded-lg bg-z-body-selected px-6 pb-6 pt-4 transition"
+        >
+          <p
+            class="border-b border-z pb-3 text-center italic text-z transition"
+          >
+            This box is only visible to OneCity admins.
+          </p>
 
-        <p class="text-z transition">
-          <ins>{request.requester}</ins> requested this{#if request.email && request.tel},
-            and can be contacted at <a
-              class="text-z-link underline decoration-transparent transition hover:decoration-inherit"
-              href="mailto:{encodeURI(request.email)}">{request.email}</a
-            >
-            or
+          <p class="text-z transition">
+            <ins>{request.requester}</ins> requested this{#if request.email && request.tel},
+              and can be contacted at <a
+                class="text-z-link underline decoration-transparent transition hover:decoration-inherit"
+                href="mailto:{encodeURI(request.email)}">{request.email}</a
+              >
+              or
+              <a
+                class="text-z-link underline decoration-transparent transition hover:decoration-inherit"
+                href="tel:{request.tel.replace(/[^\d]/g, '')}">{request.tel}</a
+              >{:else if request.email}, and can be contacted at <a
+                class="text-z-link underline decoration-transparent transition hover:decoration-inherit"
+                href="mailto:{encodeURI(request.email)}">{request.email}</a
+              >{:else if request.tel}and can be contacted at <a
+                class="text-z-link underline decoration-transparent transition hover:decoration-inherit"
+                href="tel:{request.tel.replace(/[^\d]/g, '')}">{request.tel}</a
+              >{/if}.
+          </p>
+
+          <p class="text-z transition">Pick up location: {request.location}.</p>
+
+          <div class="grid grid-cols-2 gap-1 text-center">
             <a
-              class="text-z-link underline decoration-transparent transition hover:decoration-inherit"
-              href="tel:{request.tel.replace(/[^\d]/g, '')}">{request.tel}</a
-            >{:else if request.email}, and can be contacted at <a
-              class="text-z-link underline decoration-transparent transition hover:decoration-inherit"
-              href="mailto:{encodeURI(request.email)}">{request.email}</a
-            >{:else if request.tel}and can be contacted at <a
-              class="text-z-link underline decoration-transparent transition hover:decoration-inherit"
-              href="tel:{request.tel.replace(/[^\d]/g, '')}">{request.tel}</a
-            >{/if}.
-        </p>
+              class="field rounded-r rounded-bl"
+              href="/request/create?id={id}"
+            >
+              Edit
+            </a>
 
-        <p class="text-z transition">Pick up location: {request.location}.</p>
-
-        <div class="grid grid-cols-2 gap-1 text-center">
-          <a class="field rounded-r rounded-bl" href="/request/create?id={id}">
-            Edit
-          </a>
-
-          <button
-            class="field rounded-l rounded-br"
-            on:click={() => {
-              const didDelete = confirm(
-                "Are you absolutely sure you want to delete " +
-                  request.name +
-                  "?"
-              )
-
-              if (didDelete) {
-                location.href = `/request/${id}/delete`
-              }
-            }}
-          >
-            Delete
-          </button>
-
-          <form
-            class="col-span-2"
-            method="POST"
-            use:enhance={() => () => location.reload()}
-            action="?/{request.completed ? 'uncomplete' : 'complete'}"
-          >
             <button
-              class="field block w-full rounded-t"
-              on:click={({ currentTarget }) => {
-                currentTarget.textContent =
-                  "Marking" + currentTarget.textContent?.slice(4) + "..."
+              class="field rounded-l rounded-br"
+              on:click={() => {
+                const didDelete = confirm(
+                  "Are you absolutely sure you want to delete " +
+                    request.name +
+                    "?"
+                )
 
-                setTimeout(() => (currentTarget.disabled = true))
+                if (didDelete) {
+                  location.href = `/request/${id}/delete`
+                }
               }}
             >
-              {request.completed ? "Mark as active" : "Mark as completed"}
+              Delete
             </button>
-          </form>
+
+            <form
+              class="col-span-2"
+              method="POST"
+              use:enhance={() => () => location.reload()}
+              action="?/{request.completed ? 'uncomplete' : 'complete'}"
+            >
+              <button
+                class="field block w-full rounded-t"
+                on:click={({ currentTarget }) => {
+                  currentTarget.textContent =
+                    "Marking" + currentTarget.textContent?.slice(4) + "..."
+
+                  setTimeout(() => (currentTarget.disabled = true))
+                }}
+              >
+                {request.completed ? "Mark as active" : "Mark as completed"}
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    {/if}
+      {/if}
+
+      <form
+        class="flex w-full flex-1 flex-col gap-6 md:py-4 md:pl-8 md:shadow-[-15px_0_10px_-10px_rgba(0,0,0,0.1)]"
+        method="post"
+        action="?/email"
+        use:enhance={() => {
+          alert("Sending contact form...")
+
+          return ({ update }) => {
+            alert("Sent!")
+            update()
+          }
+        }}
+      >
+        <p class="mb-6 text-center text-sm text-z-subtitle">
+          <span class="inline xs:block lg:inline">Do you have this item?</span>
+
+          <span class="inline xs:block lg:inline"
+            >Contact the OneCity team below!</span
+          >
+        </p>
+
+        <label class="label">
+          <p>Your full name</p>
+
+          <input
+            class="field w-full"
+            name="name"
+            type="text"
+            autocapitalize="words"
+            autocomplete="name"
+            required
+          />
+        </label>
+
+        <label class="label">
+          <p>Your email address</p>
+
+          <input
+            class="field w-full"
+            name="email"
+            type="text"
+            autocomplete="email"
+            bind:value={email}
+            required
+          />
+        </label>
+
+        <label class="label">
+          <p>Your phone number</p>
+
+          <input
+            class="field w-full"
+            name="tel"
+            type="tel"
+            autocomplete="tel"
+            pattern={"^[\\+]*[\\(]?\\d{3}[\\)]?[\\-\\s\\.\\/0-9]{7}$"}
+            bind:value={tel}
+            required={!email}
+          />
+        </label>
+
+        <label class="label">
+          <p>Images of your item</p>
+
+          <input
+            class="field w-full text-sm"
+            name="images"
+            type="file"
+            multiple
+          />
+        </label>
+
+        <label class="label flex flex-1">
+          <p>Anything else you want to tell us?</p>
+
+          <textarea
+            class="field auto-resize min-h-[100%] w-full flex-1"
+            name="description"
+            autocomplete="off"
+            required
+            use:autoResize
+          />
+        </label>
+
+        <button class="field w-full" type="submit">Send it!</button>
+      </form>
+    </div>
   </div>
 {:else}
   <Error status={404} message={"No request with an ID of " + id + " exists."} />
