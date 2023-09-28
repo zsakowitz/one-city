@@ -1,5 +1,7 @@
 <script lang="ts">
   import ThemeSwitcher from "./ThemeSwitcher.svelte"
+
+  export let isLoggedIn: boolean
 </script>
 
 <div
@@ -27,10 +29,25 @@
       >&middot;</span
     >
 
-    <a
-      class="pointer-events-auto relative left-[calc(-0.5rem_-_1px)] mr-auto rounded-lg border border-transparent px-2 py-0.5 text-z underline decoration-transparent decoration-1 underline-offset-2 ring-z-focus transition hover:decoration-current focus-visible:border-z-focus focus-visible:outline-none focus-visible:ring"
-      href="/log-in">Log In</a
-    >
+    {#if isLoggedIn}
+      <form
+        class="pointer-events-auto relative left-[calc(-0.5rem_-_1px)] mr-auto flex rounded-lg border border-transparent px-2 py-0.5 text-z underline decoration-transparent decoration-1 underline-offset-2 ring-z-focus transition hover:decoration-current focus-visible:border-z-focus focus-visible:outline-none focus-visible:ring"
+        method="post"
+        action="/log-out"
+      >
+        <button
+          class="flex flex-1 items-center justify-center text-center"
+          type="submit"
+        >
+          Log Out
+        </button>
+      </form>
+    {:else}
+      <a
+        class="pointer-events-auto relative left-[calc(-0.5rem_-_1px)] mr-auto rounded-lg border border-transparent px-2 py-0.5 text-z underline decoration-transparent decoration-1 underline-offset-2 ring-z-focus transition hover:decoration-current focus-visible:border-z-focus focus-visible:outline-none focus-visible:ring"
+        href="/log-in">Log In</a
+      >
+    {/if}
 
     <ThemeSwitcher />
   </div>

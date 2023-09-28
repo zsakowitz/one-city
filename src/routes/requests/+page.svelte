@@ -1,6 +1,11 @@
 <script lang="ts">
+  import Fa from "$lib/Fa.svelte"
   import { highlightFuzzySearchResult } from "$lib/highlight-fuzzy-result"
   import type { ItemRequestJSON } from "$lib/server/item-request"
+  import {
+    faSortAlphaDown,
+    faSortAlphaUpAlt,
+  } from "@fortawesome/free-solid-svg-icons"
   import fuzzy from "fuzzysort"
   import type { PageData } from "./$types"
   import Request from "./Request.svelte"
@@ -192,39 +197,101 @@
 <div class="flex flex-col gap-1">
   {#if visibleRequests.length}
     <div
-      class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem] items-center gap-2 overflow-hidden rounded px-2 py-1 font-semibold transition first:rounded-t-xl last:rounded-b-xl"
+      class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem] items-center gap-8 overflow-hidden rounded px-2 py-1 font-semibold transition first:rounded-t-xl last:rounded-b-xl"
     >
       <button
-        class="relative text-left text-z transition [&_b]:text-z-heading"
+        class="relative flex items-center text-left text-z transition [&_b]:text-z-heading"
         on:click={makeSorter("name")}
       >
         Item
+
+        {#if sortingField == "name"}
+          <Fa
+            class="ml-2 h-4 w-4"
+            icon={sortingDirection == "dsc"
+              ? faSortAlphaUpAlt
+              : faSortAlphaDown}
+            title="Sorting direction"
+          />
+        {:else}
+          <div class="ml-2 h-4 w-4" />
+        {/if}
       </button>
 
       <button
-        class="text-left text-z transition"
-        on:click={makeSorter("requester")}>Requester</button
+        class="flex items-center whitespace-nowrap text-left text-z transition"
+        on:click={makeSorter("requester")}
       >
+        Requester
+
+        {#if sortingField == "requester"}
+          <Fa
+            class="ml-2 h-4 w-4"
+            icon={sortingDirection == "dsc"
+              ? faSortAlphaUpAlt
+              : faSortAlphaDown}
+            title="Sorting direction"
+          />
+        {:else}
+          <div class="ml-2 h-4 w-4" />
+        {/if}
+      </button>
 
       <button
-        class="text-left text-z transition"
+        class="flex items-center whitespace-nowrap text-left text-z transition"
         on:click={makeSorter("creation")}
       >
         Date Requested
+
+        {#if sortingField == "creation"}
+          <Fa
+            class="ml-2 h-4 w-4"
+            icon={sortingDirection == "dsc"
+              ? faSortAlphaUpAlt
+              : faSortAlphaDown}
+            title="Sorting direction"
+          />
+        {:else}
+          <div class="ml-2 h-4 w-4" />
+        {/if}
       </button>
 
       <button
-        class="text-right text-z transition"
+        class="flex items-center whitespace-nowrap text-right text-z transition"
         on:click={makeSorter("size")}
       >
         {sizeFilter == null ? "Size" : ""}
+
+        {#if sortingField == "size" && sizeFilter == null}
+          <Fa
+            class="ml-2 h-4 w-4"
+            icon={sortingDirection == "dsc"
+              ? faSortAlphaUpAlt
+              : faSortAlphaDown}
+            title="Sorting direction"
+          />
+        {:else}
+          <div class="ml-2 h-4 w-4" />
+        {/if}
       </button>
 
       <button
-        class="text-right text-z transition"
+        class="flex items-center whitespace-nowrap text-right text-z transition"
         on:click={makeSorter("urgency")}
       >
         {urgencyFilter == null ? "Urgency" : ""}
+
+        {#if sortingField == "urgency" && urgencyFilter == null}
+          <Fa
+            class="ml-2 h-4 w-4"
+            icon={sortingDirection == "dsc"
+              ? faSortAlphaUpAlt
+              : faSortAlphaDown}
+            title="Sorting direction"
+          />
+        {:else}
+          <div class="ml-2 h-4 w-4" />
+        {/if}
       </button>
     </div>
   {/if}

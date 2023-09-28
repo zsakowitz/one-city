@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { dateToString } from "$lib/date-to-string"
   import type { ItemRequestJSON } from "$lib/server/item-request"
   import Size from "./Size.svelte"
   import Urgency from "./Urgency.svelte"
@@ -11,7 +10,7 @@
 
 <a
   href={"/request/" + request.id}
-  class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem] items-center gap-2 overflow-hidden rounded bg-z-body-selected px-2 py-1 transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
+  class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem] items-center gap-8 overflow-hidden rounded bg-z-body-selected px-2 py-1 transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
 >
   <p class="relative text-z transition [&_b]:text-z-heading">
     {@html request.nameHTML}
@@ -22,7 +21,11 @@
   </p>
 
   <p class="text-z transition">
-    {dateToString(new Date(request.creation))}
+    {new Date(request.creation).toLocaleDateString(undefined, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })}
   </p>
 
   {#if showSize}

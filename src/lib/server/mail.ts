@@ -48,17 +48,18 @@ export async function send(
     text: unknown
   } & ({ to: unknown } | { cc: unknown } | { bcc: unknown })
 ): Promise<Result<void>> {
-  if (transport) {
-    try {
-      await transport.sendMail({ ...options, from: ONE_CITY_MAIL_FROM })
-      return Result.ok()
-    } catch (err) {
-      console.error(err)
-      return issues
-    }
-  } else {
-    console.log("An email was sent:")
-    console.log(options)
+  try {
+    const info = await transport.sendMail({
+      ...options,
+      from: ONE_CITY_MAIL_FROM,
+    })
+
+    console.log(info)
+
     return Result.ok()
+  } catch (err) {
+    console.error(err)
+
+    return issues
   }
 }

@@ -165,7 +165,7 @@
     </div>
 
     <button class="field w-96 max-w-full"
-      >{data?.url ? "Edit" : "Create"} Item Request</button
+      >{data?.url ? "Save" : "Create"} Item Request</button
     >
 
     {#if form && form.ok}

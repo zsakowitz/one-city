@@ -3,6 +3,9 @@
   import Navigation from "$lib/Navigation.svelte"
   import { isDark } from "$lib/theme"
   import "../app.postcss"
+  import type { PageData } from "./$types"
+
+  export let data: PageData
 
   $: {
     if (browser) {
@@ -13,7 +16,7 @@
   }
 </script>
 
-<Navigation />
+<Navigation isLoggedIn={data.isLoggedIn} />
 
 <div
   class="mx-6 mb-8 mt-16 flex flex-1 flex-col text-z transition print:mx-0 print:my-0"

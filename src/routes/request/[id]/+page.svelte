@@ -183,7 +183,7 @@
                   setTimeout(() => (currentTarget.disabled = true))
                 }}
               >
-                {request.completed ? "Mark as active" : "Mark as completed"}
+                {request.completed ? "Mark as Active" : "Mark as Completed"}
               </button>
             </form>
           </div>
