@@ -6,7 +6,7 @@
 
 <button
   aria-checked={$isDark}
-  class="group pointer-events-auto relative z-20 flex h-5 w-10 items-center rounded-full border border-slate-200 bg-z-theme-switcher bg-clip-padding ring-z-focus transition focus-visible:border-z-focus focus-visible:outline-none focus-visible:ring dark:border-z-bg-theme-switcher dark:focus-visible:border-z-focus"
+  class="group pointer-events-auto relative z-20 ml-auto flex h-5 w-10 items-center rounded-full border border-slate-200 bg-z-theme-switcher bg-clip-padding ring-z-focus transition focus-visible:border-z-focus focus-visible:outline-none focus-visible:ring dark:border-z-bg-theme-switcher dark:focus-visible:border-z-focus"
   on:click={toggleIsDark}
   role="switch"
 >

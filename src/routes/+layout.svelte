@@ -16,7 +16,7 @@
   }
 </script>
 
-<Navigation isLoggedIn={data.isLoggedIn} />
+<Navigation isAdmin={data.isAdmin} isLoggedIn={data.isLoggedIn} />
 
 <div
   class="mx-6 mb-8 mt-16 flex flex-1 flex-col text-z transition print:mx-0 print:my-0"
