@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { ItemRequestJSON } from "$lib/server/item-request"
   import Size from "./Size.svelte"
-  import Urgency from "./Urgency.svelte"
 
   export let request: ItemRequestJSON
   export let showSize: boolean
@@ -30,9 +29,22 @@
 
   {#if showSize}
     <Size class="relative ml-auto h-4 w-4" size={request.size} />
+  {:else}
+    <span />
   {/if}
 
   {#if showUrgency}
-    <Urgency class="relative ml-auto h-4 w-4" urgency={request.urgency} />
+    <span
+      class="text-right font-medium {request.urgency == 1
+        ? 'text-red-600 dark:text-red-500'
+        : request.urgency == 2
+        ? 'text-orange-600 dark:text-orange-500'
+        : 'text-yellow-600 dark:text-yellow-500'}"
+      >{request.urgency == 1
+        ? "High"
+        : request.urgency == 2
+        ? "Medium"
+        : "Low"}</span
+    >
   {/if}
 </a>

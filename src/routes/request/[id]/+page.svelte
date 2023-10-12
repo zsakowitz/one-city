@@ -3,13 +3,12 @@
   import { autoResize } from "$lib/auto-resize"
   import { escapeHTML } from "$lib/escape-html"
   import Error from "../../+error.svelte"
-  import Urgency from "../../requests/Urgency.svelte"
   import type { ActionData, PageData } from "./$types.js"
 
   export let data: PageData
   export let form: ActionData
 
-  const { admin, id } = data
+  const { id, isAdmin } = data
   const request = form?.json || data.request
 
   let email = ""
@@ -21,19 +20,6 @@
     <span class="text-xl text-z-heading transition">
       {request.name}
     </span>
-
-    <div
-      class="title ml-auto flex items-center justify-center text-base font-normal text-z transition after:whitespace-nowrap"
-      data-title={request.urgency == 1
-        ? "Urgent"
-        : request.urgency == 2
-        ? "Somewhat Urgent"
-        : "Not Urgent"}
-    >
-      <div class="title-line" />
-
-      <Urgency class="h-4 w-4" urgency={request.urgency} />
-    </div>
   </h1>
 
   <div class="grid flex-1 gap-x-6 gap-y-4 md:grid-cols-2">
@@ -112,7 +98,7 @@
     <div
       class="ml-auto mt-8 flex h-full w-full flex-1 flex-col md:mt-0 md:max-w-md md:pl-8"
     >
-      {#if !import.meta.env.DEV && admin}
+      {#if isAdmin}
         <div
           class="mb-8 flex w-full flex-col gap-4 rounded-lg bg-z-body-selected px-6 pb-6 pt-4 transition"
         >

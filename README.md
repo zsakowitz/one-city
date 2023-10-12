@@ -16,7 +16,6 @@ npm run dev --open
 
 ## To Do
 
-- [ ] Glide employees can add others as admins.
 - [ ] Color requests on dashboard based on status.
 - [ ] Autocomplete location.
 - [ ] Color buttons like Edit, Delete, Mark as Completed, Mark as Active, Send
@@ -45,3 +44,4 @@ npm run dev --open
         name and last name in a database so that it will be easy to query for
         example only by first name or last name. If we have both stored together
         as one field, such action is not possible.
+- [x] Glide employees can add others as admins.

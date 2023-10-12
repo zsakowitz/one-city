@@ -10,6 +10,7 @@
   import type { PageData } from "./$types"
   import Request from "./Request.svelte"
   import UrgencyFilter from "./UrgencyFilter.svelte"
+  import SizeFilter from "./SizeFilter.svelte"
 
   let sizeFilter: "sm" | "md" | "lg" | undefined
   let urgencyFilter: 1 | 2 | 3 | undefined
@@ -187,6 +188,8 @@
 <div class="mb-6 flex gap-2">
   <UrgencyFilter bind:urgency={urgencyFilter} />
 
+  <SizeFilter bind:size={sizeFilter} />
+
   {#if data.admin}
     <a class="field field-modern ml-auto" href="/request/create"
       >Create Request</a
@@ -303,10 +306,14 @@
       showUrgency={urgencyFilter == null}
     />
   {:else}
-    {#if query || urgencyFilter}
-      <p>No items matched. Try adjusting your search query and filters.</p>
-    {:else}
-      <p>You don't have any requests yet!</p>
-    {/if}
+    <p
+      class="mt-9 text-center [text-wrap:balance] bg-z-body-selected rounded-md px-3 py-1"
+    >
+      {#if query || urgencyFilter || sizeFilter}
+        No items matched. Try adjusting your search query and filters.
+      {:else}
+        You don't have any requests yet!
+      {/if}
+    </p>
   {/each}
 </div>

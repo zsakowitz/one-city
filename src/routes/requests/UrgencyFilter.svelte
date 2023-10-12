@@ -1,19 +1,19 @@
 <script lang="ts">
   import {
+    faAnglesUp,
     faChevronDown,
     faChevronUp,
-    faWarning,
   } from "@fortawesome/free-solid-svg-icons"
   import RadioButton from "./RadioButton.svelte"
 
   export let urgency: 1 | 2 | 3 | undefined
 </script>
 
-<div class="title flex gap-1" data-title="Urgency">
+<div class="title flex gap-0.5" data-title="Urgency">
   <RadioButton
     inactive={urgency && urgency != 1}
     onClick={() => (urgency = urgency == 1 ? undefined : 1)}
-    icon={faWarning}
+    icon={faAnglesUp}
     title="Urgent"
   />
 
