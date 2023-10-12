@@ -17,11 +17,6 @@ npm run dev --open
 ## To Do
 
 - [ ] Glide employees can add others as admins.
-- [ ] Change "full name" fields to separate first and last name.
-- [ ] In real world, it’s a common practice to have separate fields for first
-      name and last name in a database so that it will be easy to query for
-      example only by first name or last name. If we have both stored together
-      as one field, such action is not possible.
 - [ ] Color requests on dashboard based on status.
 - [ ] Autocomplete location.
 - [ ] Color buttons like Edit, Delete, Mark as Completed, Mark as Active, Send
@@ -45,3 +40,8 @@ npm run dev --open
   - [x] After logged in, change the “Log In” button at the top to “Log Out”
   - [x] Implement Log Out
 - [x] Add sort indicators to “all requests” page.
+- [x] Change "full name" fields to separate first and last name.
+  - [x] In real world, it’s a common practice to have separate fields for first
+        name and last name in a database so that it will be easy to query for
+        example only by first name or last name. If we have both stored together
+        as one field, such action is not possible.
