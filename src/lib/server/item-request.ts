@@ -13,6 +13,8 @@ export interface ItemRequestJSON {
   location: string
   name: string
   nameHTML: string
+  requesterFirst: string
+  requesterLast: string
   requester: string
   requesterHTML: string
   size: "sm" | "md" | "lg"
@@ -80,6 +82,8 @@ export class ItemRequest {
       id: true,
       location: true,
       name: true,
+      requesterFirst: true,
+      requesterLast: true,
       requester: true,
       size: true,
       tel: true,
@@ -92,7 +96,9 @@ export class ItemRequest {
       creation: value.creation.getTime(),
       completed: value.completed?.getTime() ?? null,
       nameHTML: escapeHTML(value.name),
-      requesterHTML: escapeHTML(value.requester),
+      requesterHTML: escapeHTML(
+        value.requesterFirst + " " + value.requesterLast
+      ),
       size: value.size == "Small" ? "sm" : value.size == "Large" ? "lg" : "md",
       urgency:
         value.urgency == "LowPriority"
@@ -125,10 +131,12 @@ export class ItemRequestList {
       id: true,
       location: true,
       name: true,
-      requester: true,
+      requesterFirst: true,
+      requesterLast: true,
       size: true,
       tel: true,
       urgency: true,
+      url: true,
     })
 
     return data.map((value) =>
@@ -137,7 +145,10 @@ export class ItemRequestList {
         creation: item.creation.getTime(),
         completed: item.completed?.getTime() ?? null,
         nameHTML: escapeHTML(item.name),
-        requesterHTML: escapeHTML(item.requester),
+        requester: item.requesterFirst + " " + item.requesterLast,
+        requesterHTML: escapeHTML(
+          item.requesterFirst + " " + item.requesterLast
+        ),
         size: item.size == "Small" ? "sm" : item.size == "Large" ? "lg" : "md",
         urgency:
           item.urgency == "LowPriority"
@@ -145,7 +156,6 @@ export class ItemRequestList {
             : item.urgency == "HighPriority"
             ? 1
             : 2,
-        url: true,
       }))
     )
   }

@@ -6,7 +6,15 @@ import { send } from "./mail"
 
 export class Account {
   static create = Result.coroutineAsync(
-    async (get, data: { email: string; name: string; password: string }) => {
+    async (
+      get,
+      data: {
+        email: string
+        nameFirst: string
+        nameLast: string
+        password: string
+      }
+    ) => {
       const verificationCode = crypto.randomUUID()
 
       if (
@@ -29,7 +37,8 @@ export class Account {
             data: {
               currentSession: crypto.randomUUID(),
               email: data.email,
-              name: data.name,
+              nameFirst: data.nameFirst,
+              nameLast: data.nameLast,
               verified: false,
               password: await hashPassword(data.password),
               verificationCode,
@@ -41,7 +50,7 @@ export class Account {
       get(
         await send({
           subject: "Verify your OneCity account",
-          text: `Hi ${data.name}!
+          text: `Hi ${data.nameFirst}!
 
 Thanks for signing up to OneCity! You're contributing to building a better world. To finish, verify your account with the link below.
 
@@ -50,7 +59,9 @@ https://1city.zsnout.com/verify/${verificationCode}
 Thanks!
 
 – The OneCity Team`,
-          to: [{ address: data.email, name: data.name }],
+          to: [
+            { address: data.email, name: data.nameFirst + " " + data.nameLast },
+          ],
         })
       )
 

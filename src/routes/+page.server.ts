@@ -4,9 +4,13 @@ import type { PageServerLoad } from "./$types"
 export async function load({
   locals: { account },
 }: Parameters<PageServerLoad>[0]) {
-  return {
-    name: account
-      ? unwrapOr500(await account.select({ name: true })).name
-      : undefined,
+  if (account) {
+    const { nameFirst, nameLast } = unwrapOr500(
+      await account.select({ nameFirst: true, nameLast: true })
+    )
+
+    return { name: nameFirst + " " + nameLast }
+  } else {
+    return { name: undefined }
   }
 }

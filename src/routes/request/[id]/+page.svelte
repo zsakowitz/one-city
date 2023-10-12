@@ -212,11 +212,24 @@
         </p>
 
         <label class="label">
-          <p>Your full name</p>
+          <p>Your first name</p>
 
           <input
             class="field w-full"
-            name="name"
+            name="nameFirst"
+            type="text"
+            autocapitalize="words"
+            autocomplete="name"
+            required
+          />
+        </label>
+
+        <label class="label">
+          <p>Your last name</p>
+
+          <input
+            class="field w-full"
+            name="nameLast"
             type="text"
             autocapitalize="words"
             autocomplete="name"

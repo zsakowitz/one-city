@@ -20,7 +20,8 @@ model Account {
   currentSession   String    @unique
   email            String    @unique
   password         String
-  name             String
+  nameFirst        String
+  nameLast         String
   passkeys         Passkey[]
 
   verified         Boolean
@@ -58,16 +59,17 @@ model ItemRequest {
   creation DateTime @default(now())
   updated  DateTime @default(now()) @updatedAt
 
-  completed   DateTime?
-  email       String?
-  description String
-  location    String
-  name        String
-  requester   String
-  size        Size
-  tel         String?
-  urgency     Urgency
-  url         String?
+  completed      DateTime?
+  email          String?
+  description    String
+  location       String
+  name           String
+  requesterFirst String
+  requesterLast  String
+  size           Size
+  tel            String?
+  urgency        Urgency
+  url            String?
 }
 
 enum Size {

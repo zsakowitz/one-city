@@ -22,12 +22,24 @@
         update({ reset: false })}
   >
     <label class="label">
-      <p>Name</p>
+      <p>First Name</p>
 
       <input
         class="field w-full"
         maxlength="64"
-        name="name"
+        name="nameFirst"
+        required
+        type="text"
+      />
+    </label>
+
+    <label class="label">
+      <p>Last Name</p>
+
+      <input
+        class="field w-full"
+        maxlength="64"
+        name="nameLast"
         required
         type="text"
       />

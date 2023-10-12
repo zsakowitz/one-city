@@ -91,11 +91,23 @@
 
       <div class="flex flex-col gap-6">
         <label class="label">
-          <p>Requester's Full Name</p>
+          <p>Requester's First Name</p>
 
           <input
             class="field w-full"
-            name="requester"
+            name="requesterFirst"
+            type="text"
+            required
+            value={data?.requester || ""}
+          />
+        </label>
+
+        <label class="label">
+          <p>Requester's Last Name</p>
+
+          <input
+            class="field w-full"
+            name="requesterLast"
             type="text"
             required
             value={data?.requester || ""}

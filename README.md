@@ -18,13 +18,14 @@ npm run dev --open
 
 - [ ] Glide employees can add others as admins.
 - [ ] Change "full name" fields to separate first and last name.
-  - [ ] In real world, it’s a common practice to have separate fields for first
-        name and last name in a database so that it will be easy to query for
-        example only by first name or last name. If we have both stored together
-        as one field, such action is not possible.
+- [ ] In real world, it’s a common practice to have separate fields for first
+      name and last name in a database so that it will be easy to query for
+      example only by first name or last name. If we have both stored together
+      as one field, such action is not possible.
 - [ ] Color requests on dashboard based on status.
 - [ ] Autocomplete location.
-- [ ] Color buttons like Edit, Delete, Mark as Completed, Mark as Active Send It
+- [ ] Color buttons like Edit, Delete, Mark as Completed, Mark as Active, Send
+      It
 - [ ] The urgency icon, arrow up and arrow down, are not intuitive. Instead,
       just use “High,” “Medium,” and “Low.” They also need to be colored with
       perhaps red, orange, and yellow respectively.
