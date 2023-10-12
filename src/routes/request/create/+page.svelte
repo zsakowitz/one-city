@@ -98,7 +98,7 @@
             name="requesterFirst"
             type="text"
             required
-            value={data?.requester || ""}
+            value={data?.requesterFirst || ""}
           />
         </label>
 
@@ -110,7 +110,7 @@
             name="requesterLast"
             type="text"
             required
-            value={data?.requester || ""}
+            value={data?.requesterLast || ""}
           />
         </label>
 

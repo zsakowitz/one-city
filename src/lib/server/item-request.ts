@@ -43,10 +43,12 @@ export class ItemRequest {
 
   constructor(readonly filter: Prisma.ItemRequestWhereUniqueInput) {}
 
-  select<T extends Prisma.ItemRequestSelect>(select: T) {
+  select<T extends Prisma.ItemRequestSelect>(
+    select: T extends { requester: boolean } ? never : T
+  ) {
     return query((db) =>
       db.itemRequest.findUniqueOrThrow({
-        select,
+        select: select as T,
         where: this.filter,
       })
     )
@@ -84,7 +86,6 @@ export class ItemRequest {
       name: true,
       requesterFirst: true,
       requesterLast: true,
-      requester: true,
       size: true,
       tel: true,
       urgency: true,
@@ -96,6 +97,7 @@ export class ItemRequest {
       creation: value.creation.getTime(),
       completed: value.completed?.getTime() ?? null,
       nameHTML: escapeHTML(value.name),
+      requester: value.requesterFirst + " " + value.requesterLast,
       requesterHTML: escapeHTML(
         value.requesterFirst + " " + value.requesterLast
       ),

@@ -104,10 +104,12 @@ Thanks!
 
   constructor(readonly filter: Prisma.AccountWhereUniqueInput) {}
 
-  select<T extends Prisma.AccountSelect>(select: T) {
+  select<T extends Prisma.AccountSelect>(
+    select: T extends { name: boolean } ? never : T
+  ) {
     return query((db) =>
       db.account.findUniqueOrThrow({
-        select,
+        select: select as T,
         where: this.filter,
       })
     )
