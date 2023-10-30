@@ -16,8 +16,13 @@
   let urgencyFilter: 1 | 2 | 3 | undefined
   let query = ""
 
-  let sortingField: "urgency" | "size" | "creation" | "requester" | "name" =
-    "urgency"
+  let sortingField:
+    | "completed"
+    | "urgency"
+    | "size"
+    | "creation"
+    | "requester"
+    | "name" = "urgency"
 
   export let data: PageData
   const requests = data.list
@@ -30,7 +35,13 @@
     urgencyFilter: 1 | 2 | 3 | undefined,
     query: string,
     sortingDirection: "asc" | "dsc",
-    sortingField: "urgency" | "size" | "creation" | "requester" | "name"
+    sortingField:
+      | "completed"
+      | "urgency"
+      | "size"
+      | "creation"
+      | "requester"
+      | "name"
   ) {
     if (sizeFilter) {
       requests = requests.filter((x) => x.size == sizeFilter)
@@ -42,13 +53,17 @@
       requests.sort((a, b) => a.urgency - b.urgency)
     }
 
-    requests.sort((a, b) =>
-      a[sortingField] < b[sortingField]
-        ? -1
-        : a[sortingField] > b[sortingField]
-        ? 1
-        : 0
-    )
+    if (sortingField == "completed") {
+      requests.sort((a, b) => +(a.completed == null) - +(b.completed == null))
+    } else {
+      requests.sort((a, b) =>
+        a[sortingField] < b[sortingField]
+          ? -1
+          : a[sortingField] > b[sortingField]
+          ? 1
+          : 0
+      )
+    }
 
     if (sortingField == "size") {
       requests.reverse()
@@ -200,7 +215,7 @@
 <div class="flex flex-col gap-1">
   {#if visibleRequests.length}
     <div
-      class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem] items-center gap-8 overflow-hidden rounded px-2 py-1 font-semibold transition first:rounded-t-xl last:rounded-b-xl"
+      class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem,4rem] items-center gap-8 overflow-hidden rounded px-2 py-1 font-semibold transition first:rounded-t-xl last:rounded-b-xl"
     >
       <button
         class="relative flex items-center text-left text-z transition [&_b]:text-z-heading"
@@ -285,6 +300,25 @@
         {urgencyFilter == null ? "Urgency" : ""}
 
         {#if sortingField == "urgency" && urgencyFilter == null}
+          <Fa
+            class="ml-2 h-4 w-4"
+            icon={sortingDirection == "dsc"
+              ? faSortAlphaUpAlt
+              : faSortAlphaDown}
+            title="Sorting direction"
+          />
+        {:else}
+          <div class="ml-2 h-4 w-4" />
+        {/if}
+      </button>
+
+      <button
+        class="flex items-center whitespace-nowrap text-right text-z transition"
+        on:click={makeSorter("completed")}
+      >
+        Status
+
+        {#if sortingField == "completed"}
           <Fa
             class="ml-2 h-4 w-4"
             icon={sortingDirection == "dsc"

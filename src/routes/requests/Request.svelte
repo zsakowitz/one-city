@@ -9,7 +9,7 @@
 
 <a
   href={"/request/" + request.id}
-  class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem] items-center gap-8 overflow-hidden rounded bg-z-body-selected px-2 py-1 transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
+  class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem,4rem] items-center gap-8 overflow-hidden rounded bg-z-body-selected px-2 py-1 transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
 >
   <p class="relative text-z transition [&_b]:text-z-heading">
     {@html request.nameHTML}
@@ -47,4 +47,11 @@
         : "Low"}</span
     >
   {/if}
+
+  <span
+    class="text-right font-medium {request.completed == null
+      ? 'text-red-600 dark:text-red-500'
+      : 'text-green-600 dark:text-green-500'}"
+    >{request.completed == null ? "Active" : "Done"}
+  </span>
 </a>
