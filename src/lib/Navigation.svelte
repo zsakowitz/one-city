@@ -52,7 +52,7 @@
           action="/log-out"
         >
           <button
-            class="flex flex-1 items-center justify-center text-center"
+            class="flex flex-1 items-center justify-center rounded-lg border border-transparent px-2 py-0.5 text-center text-z underline decoration-transparent decoration-1 underline-offset-2 ring-z-focus transition hover:decoration-current focus-visible:border-z-focus focus-visible:outline-none focus-visible:ring"
             type="submit"
           >
             Log Out

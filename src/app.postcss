@@ -47,12 +47,12 @@
   .field,
   .field-focus {
     &:focus-visible {
-      @apply border-z-focus outline-none ring;
+      @apply border-z-focus outline-none ring ring-z-focus;
     }
 
     &:where(input[type="range"]) {
       &:focus-visible::-webkit-slider-thumb {
-        @apply border-z-focus ring;
+        @apply border-z-focus ring ring-z-focus;
       }
     }
   }
