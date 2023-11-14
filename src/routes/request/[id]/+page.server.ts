@@ -80,12 +80,14 @@ export const actions = {
 
     const data = await req.formData()
 
-    const { description, email, name, tel } = extractFromFormData(data, [
-      "description",
-      "email",
-      "name",
-      "tel",
-    ] as const)
+    const { description, email, nameFirst, nameLast, tel } =
+      extractFromFormData(data, [
+        "description",
+        "email",
+        "nameFirst",
+        "nameLast",
+        "tel",
+      ] as const)
 
     const imagesDatas = data.getAll("images").filter((x) => x)
 
@@ -104,14 +106,13 @@ export const actions = {
         address: ONE_CITY_MAIL_RECEIVER_ADDRESS,
         name: ONE_CITY_MAIL_RECEIVER_NAME,
       },
-      subject: name + " may have " + info.name,
-
-      text: `${name} may have "${info.name}".
+      subject: nameFirst + " " + nameLast + " may have " + info.name,
+      text: `${nameFirst} ${nameLast} may have "${info.name}".
 
 Item: ${info.name}
 URL: https://1city.zsnout.com/request/${info.id}
 
-Name: ${name}
+Name: ${nameFirst} ${nameLast}
 Email: ${email}${tel ? "\nPhone Number: " + tel : ""}
 
 Item Description:
