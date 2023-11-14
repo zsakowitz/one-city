@@ -101,7 +101,7 @@ export const actions = {
 
     const info = unwrapOr500(await request.select({ id: true, name: true }))
 
-    send({
+    const result = await send({
       to: {
         address: ONE_CITY_MAIL_RECEIVER_ADDRESS,
         name: ONE_CITY_MAIL_RECEIVER_NAME,
@@ -117,7 +117,6 @@ Email: ${email}${tel ? "\nPhone Number: " + tel : ""}
 
 Item Description:
 ${description}`,
-
       attachments: await Promise.all(
         images.map<Promise<Attachment>>(async (file) => ({
           content: Buffer.from(await file.arrayBuffer()),
@@ -126,5 +125,7 @@ ${description}`,
         }))
       ),
     })
+
+    unwrapOr500(result)
   },
 } satisfies Actions
