@@ -187,6 +187,9 @@
               name="locationZip"
               required
               placeholder="94123"
+              min="0"
+              max="99999"
+              step="1"
               value={data?.locationZip || ""}
             />
           </label>
