@@ -1,7 +1,7 @@
 import { escapeHTML } from "$lib/escape-html"
 import type { Result } from "$lib/result"
 import type { Prisma } from "@prisma/client"
-import { query } from "./database"
+import { query, transaction } from "./database"
 
 export interface ItemRequestJSON {
   id: string
@@ -10,7 +10,10 @@ export interface ItemRequestJSON {
   completed: number | null
   email: string | null
   description: string
-  location: string
+  locationStreet: string
+  locationZip: number
+  locationCity: string
+  locationState: string
   name: string
   nameHTML: string
   requesterFirst: string
@@ -19,15 +22,30 @@ export interface ItemRequestJSON {
   requesterHTML: string
   size: "sm" | "md" | "lg"
   tel: string | null
+  uid: number
   urgency: 1 | 2 | 3
   url: string | null
 }
 
 export class ItemRequest {
-  static async create(data: Prisma.ItemRequestCreateInput) {
-    return (
-      await query((db) => db.itemRequest.create({ data, select: { id: true } }))
-    ).map(({ id }) => new ItemRequest({ id }))
+  static async create(data: Omit<Prisma.ItemRequestCreateInput, "uid">) {
+    return await transaction(async (db) => {
+      const uids = await db.itemRequest.findMany({ select: { uid: true } })
+      let largestUid = 0
+
+      for (const { uid } of uids) {
+        if (uid > largestUid) {
+          largestUid = uid
+        }
+      }
+
+      const result = await db.itemRequest.create({
+        data: { ...data, uid: largestUid + 1 },
+        select: { id: true },
+      })
+
+      return new ItemRequest(result)
+    })
   }
 
   static async find(filter: Prisma.ItemRequestWhereInput) {
@@ -82,12 +100,16 @@ export class ItemRequest {
       email: true,
       description: true,
       id: true,
-      location: true,
+      locationStreet: true,
+      locationZip: true,
+      locationCity: true,
+      locationState: true,
       name: true,
       requesterFirst: true,
       requesterLast: true,
       size: true,
       tel: true,
+      uid: true,
       urgency: true,
       url: true,
     })
@@ -131,12 +153,16 @@ export class ItemRequestList {
       creation: true,
       description: true,
       id: true,
-      location: true,
+      locationStreet: true,
+      locationZip: true,
+      locationCity: true,
+      locationState: true,
       name: true,
       requesterFirst: true,
       requesterLast: true,
       size: true,
       tel: true,
+      uid: true,
       urgency: true,
       url: true,
     })

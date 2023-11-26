@@ -22,7 +22,8 @@
     | "size"
     | "creation"
     | "requester"
-    | "name" = "urgency"
+    | "name"
+    | "uid" = "urgency"
 
   export let data: PageData
   const requests = data.list
@@ -42,6 +43,7 @@
       | "creation"
       | "requester"
       | "name"
+      | "uid"
   ) {
     if (sizeFilter) {
       requests = requests.filter((x) => x.size == sizeFilter)
@@ -215,8 +217,27 @@
 <div class="flex flex-col gap-1">
   {#if visibleRequests.length}
     <div
-      class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem,4rem] items-center gap-8 overflow-hidden rounded px-2 py-1 font-semibold transition first:rounded-t-xl last:rounded-b-xl"
+      class="relative grid grid-cols-[2rem,minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem,4rem] items-center gap-8 overflow-hidden rounded px-2 py-1 font-semibold transition first:rounded-t-xl last:rounded-b-xl"
     >
+      <button
+        class="relative flex items-center text-left text-z transition [&_b]:text-z-heading"
+        on:click={makeSorter("uid")}
+      >
+        ID
+
+        {#if sortingField == "uid"}
+          <Fa
+            class="ml-2 h-4 w-4"
+            icon={sortingDirection == "dsc"
+              ? faSortAlphaUpAlt
+              : faSortAlphaDown}
+            title="Sorting direction"
+          />
+        {:else}
+          <div class="ml-2 h-4 w-4" />
+        {/if}
+      </button>
+
       <button
         class="relative flex items-center text-left text-z transition [&_b]:text-z-heading"
         on:click={makeSorter("name")}

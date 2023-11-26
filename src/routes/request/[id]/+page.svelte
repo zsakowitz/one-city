@@ -90,7 +90,8 @@
 
         <a
           class="text-z-link underline decoration-transparent underline-offset-2 transition hover:decoration-inherit"
-          href={data.request.url}>{data.request.url}</a
+          href={data.request.url}
+          target="_blank">{data.request.url}</a
         >
       {/if}
     </div>
@@ -127,7 +128,11 @@
               >{/if}.
           </p>
 
-          <p class="text-z transition">Pick up location: {request.location}.</p>
+          <p class="text-z transition">
+            Pick up location: {request.locationStreet}, {request.locationCity}
+            {request.locationState}
+            {request.locationZip}.
+          </p>
 
           <div class="grid grid-cols-2 gap-1 text-center">
             <a

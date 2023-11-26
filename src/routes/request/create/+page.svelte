@@ -63,33 +63,6 @@
           />
         </label>
 
-        <div class="label grid grid-cols-3 gap-2">
-          <p>Urgency</p>
-
-          <RadioInput
-            checked={urgency == 1}
-            name="urgency"
-            label="High Priority"
-            value="1"
-          />
-
-          <RadioInput
-            checked={urgency == 2}
-            name="urgency"
-            label="Standard"
-            value="2"
-          />
-
-          <RadioInput
-            checked={urgency == 3}
-            name="urgency"
-            label="Low Priority"
-            value="3"
-          />
-        </div>
-      </div>
-
-      <div class="flex flex-col gap-6">
         <label class="label">
           <p>Requester's First Name</p>
 
@@ -114,7 +87,7 @@
           />
         </label>
 
-        <label class="label relative -top-1">
+        <label class="label relative">
           <p>Requester's Phone Number</p>
 
           <input
@@ -126,7 +99,7 @@
           />
         </label>
 
-        <label class="label relative -top-1">
+        <label class="label relative">
           <p>Requester's Email</p>
 
           <input
@@ -136,20 +109,10 @@
             value={data?.email || ""}
           />
         </label>
+      </div>
 
-        <label class="label relative -top-2">
-          <p>Address of Recipient</p>
-
-          <textarea
-            class="auto-resize field w-full"
-            name="location"
-            required
-            use:autoResize
-            value={data?.location || ""}
-          />
-        </label>
-
-        <div class="label grid grid-cols-3 gap-2">
+      <div class="flex flex-col gap-6">
+        <div class="label -mt-2 grid grid-cols-3 gap-2">
           <p>Size</p>
 
           <RadioInput
@@ -173,17 +136,92 @@
             value="lg"
           />
         </div>
+
+        <div class="label grid grid-cols-3 gap-2">
+          <p>Urgency</p>
+
+          <RadioInput
+            checked={urgency == 1}
+            name="urgency"
+            label="High Priority"
+            value="1"
+          />
+
+          <RadioInput
+            checked={urgency == 2}
+            name="urgency"
+            label="Standard"
+            value="2"
+          />
+
+          <RadioInput
+            checked={urgency == 3}
+            name="urgency"
+            label="Low Priority"
+            value="3"
+          />
+        </div>
+
+        <div class="mt-8">
+          <h2 class="text-center font-bold">Address of Recipient</h2>
+
+          <label class="label relative mt-6">
+            <p>Street Address and Apartment</p>
+
+            <input
+              type="text"
+              class="field w-full"
+              name="locationStreet"
+              required
+              placeholder="1234 Nonexistent St"
+              value={data?.locationStreet || ""}
+            />
+          </label>
+
+          <label class="label relative mt-6">
+            <p>Zip Code</p>
+
+            <input
+              type="number"
+              class="field w-full"
+              name="locationZip"
+              required
+              placeholder="94123"
+              value={data?.locationZip || ""}
+            />
+          </label>
+
+          <label class="label relative mt-6">
+            <p>City</p>
+
+            <input
+              type="text"
+              class="field w-full"
+              name="locationCity"
+              required
+              placeholder="San Francisco"
+              value={data?.locationCity || ""}
+            />
+          </label>
+
+          <label class="label relative mt-6">
+            <p>State</p>
+
+            <input
+              type="number"
+              class="field w-full"
+              name="locationState"
+              required
+              placeholder="California"
+              value={data?.locationState || ""}
+            />
+          </label>
+        </div>
       </div>
     </div>
 
     <button class="field w-96 max-w-full"
       >{data?.url ? "Save" : "Create"} Item Request</button
     >
-
-    {#if form && form.ok}
-      <p class="w-96 max-w-full text-center">
-        {data?.url ? "Edited" : "Created"} “{form.name}.”
-      </p>
-    {/if}
   </form>
 {/if}

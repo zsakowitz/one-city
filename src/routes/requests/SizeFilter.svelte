@@ -1,12 +1,5 @@
 <script lang="ts">
-  import {
-    faAnglesUp,
-    faChevronDown,
-    faChevronUp,
-    faL,
-    faM,
-    faS,
-  } from "@fortawesome/free-solid-svg-icons"
+  import { faL, faM, faS } from "@fortawesome/free-solid-svg-icons"
   import RadioButton from "./RadioButton.svelte"
 
   export let size: "sm" | "md" | "lg" | undefined

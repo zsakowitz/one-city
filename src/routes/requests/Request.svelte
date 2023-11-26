@@ -9,13 +9,17 @@
 
 <a
   href={"/request/" + request.id}
-  class="relative grid grid-cols-[minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem,4rem] items-center gap-8 overflow-hidden rounded bg-z-body-selected px-2 py-1 transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
+  class="relative grid grid-cols-[2rem,minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem,4rem] items-center gap-8 overflow-hidden rounded bg-z-body-selected px-2 py-1 transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
 >
-  <p class="relative text-z transition [&_b]:text-z-heading">
+  <p class="relative text-z transition">
+    {request.uid.toString().padStart(3, "0")}
+  </p>
+
+  <p class="relative text-z transition">
     {@html request.nameHTML}
   </p>
 
-  <p class="text-z transition [&_b]:text-z-heading">
+  <p class="text-z transition">
     {@html request.requesterHTML}
   </p>
 

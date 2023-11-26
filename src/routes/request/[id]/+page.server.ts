@@ -2,6 +2,7 @@ import {
   ONE_CITY_MAIL_RECEIVER_ADDRESS,
   ONE_CITY_MAIL_RECEIVER_NAME,
 } from "$env/static/private"
+import { escape } from "$lib/escape.js"
 import { extractFromFormData } from "$lib/server/extract.js"
 import { ItemRequest } from "$lib/server/item-request.js"
 import { send } from "$lib/server/mail.js"
@@ -99,24 +100,41 @@ export const actions = {
       throw error(403, "Invalid image uploaded.")
     })
 
-    const info = unwrapOr500(await request.select({ id: true, name: true }))
+    const info = unwrapOr500(
+      await request.select({ id: true, name: true, uid: true })
+    )
 
     const result = await send({
       to: {
         address: ONE_CITY_MAIL_RECEIVER_ADDRESS,
         name: ONE_CITY_MAIL_RECEIVER_NAME,
       },
-      subject: nameFirst + " " + nameLast + " may have " + info.name,
+      subject: `OneCity: #${info.uid}-${info.name}`,
+
       text: `${nameFirst} ${nameLast} may have "${info.name}".
 
+ID: ${info.uid}
 Item: ${info.name}
-URL: https://1city.zsnout.com/request/${info.id}
 
 Name: ${nameFirst} ${nameLast}
 Email: ${email}${tel ? "\nPhone Number: " + tel : ""}
+URL: https://1city.zsnout.com/request/${info.id}
 
 Item Description:
 ${description}`,
+
+      html: escape`${nameFirst} ${nameLast} may have "${info.name}".
+
+<b>ID:</b> ${info.uid}
+<b>Item:</b> ${info.name}
+
+<b>Name:</b> ${nameFirst} ${nameLast}
+<b>Email:</b> ${email}${tel ? "\n<b>Phone Number:</b> " + tel : ""}
+<b>URL:</b> https://1city.zsnout.com/request/${info.id}
+
+<b>Item Description:</b>
+${description}`,
+
       attachments: await Promise.all(
         images.map<Promise<Attachment>>(async (file) => ({
           content: Buffer.from(await file.arrayBuffer()),

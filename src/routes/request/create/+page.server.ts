@@ -21,7 +21,10 @@ export async function load(event: Parameters<PageServerLoad>[0]) {
       email: true,
       id: true,
       name: true,
-      location: true,
+      locationStreet: true,
+      locationCity: true,
+      locationState: true,
+      locationZip: true,
       requesterFirst: true,
       requesterLast: true,
       size: true,
@@ -57,7 +60,10 @@ export const actions = {
       "name",
       "requesterFirst",
       "requesterLast",
-      "location",
+      "locationStreet",
+      "locationZip",
+      "locationCity",
+      "locationState",
       "size",
       "tel",
       "urgency",
@@ -67,6 +73,15 @@ export const actions = {
     const info = {
       ...data,
       id: undefined,
+      locationZip: ((zip) => {
+        const value = +zip
+
+        if (!Number.isSafeInteger(value)) {
+          throw error(400, "The 'locationZip' field must be a number.")
+        }
+
+        return value
+      })(data.locationZip),
       size:
         data.size == "sm" ? "Small" : data.size == "lg" ? "Large" : "Medium",
       urgency:
@@ -90,7 +105,7 @@ export const actions = {
     const item = await ItemRequest.create(info)
 
     if (item.ok) {
-      return { ok: true, name: data.name } as const
+      throw redirect(303, "/requests")
     } else {
       return { ok: false, reason: item.reason } as const
     }

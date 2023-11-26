@@ -62,12 +62,16 @@ model ItemRequest {
   completed      DateTime?
   email          String?
   description    String
-  location       String
+  locationStreet String
+  locationCity   String
+  locationState  String
+  locationZip    Int
   name           String
   requesterFirst String
   requesterLast  String
   size           Size
   tel            String?
+  uid            Int
   urgency        Urgency
   url            String?
 }
