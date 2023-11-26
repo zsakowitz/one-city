@@ -208,7 +208,7 @@
             <p>State</p>
 
             <input
-              type="number"
+              type="text"
               class="field w-full"
               name="locationState"
               required
