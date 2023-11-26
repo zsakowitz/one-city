@@ -13,6 +13,8 @@
 
   let email = ""
   let tel = ""
+
+  let formState: "unsent" | "sending" | "sent" = "unsent"
 </script>
 
 {#if request}
@@ -186,10 +188,10 @@
         method="post"
         action="?/email"
         use:enhance={() => {
-          alert("Sending contact form...")
+          formState = "sending"
 
           return ({ update }) => {
-            alert("Sent!")
+            formState = "sent"
             update()
           }
         }}
@@ -278,7 +280,21 @@
           />
         </label>
 
-        <button class="field w-full" type="submit">Send it!</button>
+        <button
+          class={"field w-full" +
+            (formState == "sent"
+              ? " bg-orange-100 font-semibold text-orange-700"
+              : "")}
+          type="submit"
+          disabled={formState != "unsent"}
+          ><span class={formState == "sending" ? "opacity-30" : ""}
+            >{formState == "sent"
+              ? "Sent!"
+              : formState == "sending"
+              ? "Sending..."
+              : "Send it!"}</span
+          ></button
+        >
       </form>
     </div>
   </div>
