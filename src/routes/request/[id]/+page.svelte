@@ -91,7 +91,7 @@
         </p>
 
         <a
-          class="text-z-link underline decoration-transparent underline-offset-2 transition hover:decoration-inherit"
+          class="truncate text-z-link underline decoration-transparent underline-offset-2 transition hover:decoration-inherit"
           href={data.request.url}
           target="_blank">{data.request.url}</a
         >
