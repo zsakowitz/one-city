@@ -2,7 +2,7 @@ import {
   ONE_CITY_MAIL_RECEIVER_ADDRESS,
   ONE_CITY_MAIL_RECEIVER_NAME,
 } from "$env/static/private"
-import { escape } from "$lib/escape.js"
+import { escape, RawHtml } from "$lib/escape.js"
 import { extractFromFormData } from "$lib/server/extract.js"
 import { ItemRequest } from "$lib/server/item-request.js"
 import { send } from "$lib/server/mail.js"
@@ -109,7 +109,7 @@ export const actions = {
         address: ONE_CITY_MAIL_RECEIVER_ADDRESS,
         name: ONE_CITY_MAIL_RECEIVER_NAME,
       },
-      subject: `OneCity: #${info.uid}-${info.name}`,
+      subject: `OneCity: #${info.uid} – ${info.name}`,
 
       text: `${nameFirst} ${nameLast} may have "${info.name}".
 
@@ -129,11 +129,13 @@ ${description}`,
 <b>Item:</b> ${info.name}
 
 <b>Name:</b> ${nameFirst} ${nameLast}
-<b>Email:</b> ${email}${tel ? "\n<b>Phone Number:</b> " + tel : ""}
+<b>Email:</b> ${email}${
+        tel ? new RawHtml(escape`\n<b>Phone Number:</b> ${tel}`) : ""
+      }
 <b>URL:</b> https://1city.zsnout.com/request/${info.id}
 
 <b>Item Description:</b>
-${description}`,
+${description}`.replaceAll("\n", "<br/>"),
 
       attachments: await Promise.all(
         images.map<Promise<Attachment>>(async (file) => ({
