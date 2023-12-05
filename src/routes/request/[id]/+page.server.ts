@@ -138,11 +138,13 @@ ${description}`,
 ${description}`.replaceAll("\n", "<br/>"),
 
       attachments: await Promise.all(
-        images.map<Promise<Attachment>>(async (file) => ({
-          content: Buffer.from(await file.arrayBuffer()),
-          filename: file.name,
-          contentType: file.type,
-        }))
+        images
+          .filter((file) => file.size > 0)
+          .map<Promise<Attachment>>(async (file) => ({
+            content: Buffer.from(await file.arrayBuffer()),
+            filename: file.name,
+            contentType: file.type,
+          }))
       ),
     })
 
