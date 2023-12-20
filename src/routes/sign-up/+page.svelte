@@ -33,7 +33,7 @@
       />
     </label>
 
-    <label class="label">
+    <label class="label mt-6">
       <p>Last Name</p>
 
       <input
