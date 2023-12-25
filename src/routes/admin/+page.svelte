@@ -1,6 +1,10 @@
 <script lang="ts">
   import Fa from "$lib/Fa.svelte"
-  import { faUser, faUserGear } from "@fortawesome/free-solid-svg-icons"
+  import {
+    faInbox,
+    faUser,
+    faUserGear,
+  } from "@fortawesome/free-solid-svg-icons"
   import type { ActionData, PageData } from "./$types"
   import { enhance } from "$app/forms"
 
@@ -17,8 +21,8 @@
     class="max-w-xs rounded bg-z-body-selected px-3 py-2 text-sm [text-wrap:balance]"
   >
     <p>
-      Click a user account to make them an administrator, or click an
-      administrator's account to turn them into a standard account.
+      The status field shows whether an account is an administrator and whether
+      it receives emails about items.
     </p>
 
     <p class="mt-2">
@@ -42,68 +46,98 @@
   </div>
 </div>
 
-<div class="flex flex-col gap-1">
-  <div
-    class="relative grid grid-cols-3 items-center gap-8 overflow-hidden rounded px-2 py-1 transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
-  >
-    <p class="text-z transition">Name</p>
+<table class="w-full border-separate border-spacing-y-1">
+  <thead>
+    <tr>
+      <td class="pl-2 text-z transition">Name</td>
+      <td class="text-z transition">Email</td>
+      <td />
+      <td />
+      <td class="ml-auto pr-2 text-right text-z transition">Status</td>
+    </tr>
+  </thead>
 
-    <p class="text-z transition">Email</p>
-
-    <p class="ml-auto text-z transition">Status</p>
-  </div>
-
-  {#each form?.accounts || data.accounts as account}
-    <form class="flex" action="?/toggleStatus" method="post" use:enhance>
-      <input type="hidden" name="id" value={account.id} />
-
-      <button
-        class="relative grid h-full w-full grid-cols-3 items-center gap-8 overflow-hidden rounded bg-z-body-selected px-2 py-1 text-left transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
-        class:opacity-30={account.id == data.id}
-        type="submit"
-        disabled={account.id == data.id}
-        on:click={(event) => {
-          if (account.id == data.id) {
-            event.preventDefault()
-          }
-
-          if (account.admin) {
-            if (
-              !confirm(
-                "Are you sure you want to remove " +
-                  account.name +
-                  " from the admin list?"
-              )
-            ) {
-              event.preventDefault()
-            }
-          } else {
-            if (
-              !confirm(
-                "Are you sure to want to make " + account.name + " an admin?"
-              )
-            ) {
-              event.preventDefault()
-            }
-          }
-        }}
-      >
-        <p class="text-z transition">
+  <tbody>
+    {#each form?.accounts || data.accounts as account}
+      <tr class="field field-modern rounded-lg">
+        <td class="rounded-l py-1 pl-2 text-z transition">
           {account.id == data.id ? "You" : account.name}
-        </p>
+        </td>
 
-        <p class="text-z transition">
-          {account.id == data.id
-            ? "cannot remove yourself as an admin"
-            : account.email}
-        </p>
+        <td class="py-1 text-z transition">
+          {account.email}
+        </td>
 
-        <Fa
-          class="ml-auto h-4 w-4"
-          icon={account.admin ? faUserGear : faUser}
-          title={account.admin ? "administrator" : "standard user"}
-        />
-      </button>
-    </form>
-  {/each}
-</div>
+        <td class="py-1">
+          {#if account.admin}
+            {#if account.id == data.id}
+              <em>cannot de-admin yourself</em>
+            {:else}
+              <form action="?/set" method="post" use:enhance>
+                <input type="hidden" name="id" value={account.id} />
+                <input type="hidden" name="adminMail" value="false" />
+                <input type="hidden" name="admin" value="false" />
+
+                <button class="underline underline-offset-2" type="submit">
+                  Remove Admin
+                </button>
+              </form>
+            {/if}
+          {:else}
+            <form action="?/set" method="post" use:enhance>
+              <input type="hidden" name="id" value={account.id} />
+              <input type="hidden" name="adminMail" value="false" />
+              <input type="hidden" name="admin" value="true" />
+
+              <button class="underline underline-offset-2" type="submit">
+                Make Admin
+              </button>
+            </form>
+          {/if}
+        </td>
+
+        <td class="py-1">
+          {#if account.admin && account.adminMail}
+            <form action="?/set" method="post" use:enhance>
+              <input type="hidden" name="id" value={account.id} />
+              <input type="hidden" name="adminMail" value="false" />
+              <input type="hidden" name="admin" value="true" />
+
+              <button class="underline underline-offset-2" type="submit">
+                Stop Receiving Mail
+              </button>
+            </form>
+          {:else}
+            <form action="?/set" method="post" use:enhance>
+              <input type="hidden" name="id" value={account.id} />
+              <input type="hidden" name="adminMail" value="true" />
+              <input type="hidden" name="admin" value="true" />
+
+              <button class="underline underline-offset-2" type="submit">
+                Receive Mail
+              </button>
+            </form>
+          {/if}
+        </td>
+
+        <td class="ml-auto rounded-r py-1 pr-2">
+          <div class="flex">
+            <div class="flex-1" />
+
+            <Fa
+              class="h-4 w-4"
+              icon={account.admin ? faUserGear : faUser}
+              title={account.admin ? "administrator" : "standard user"}
+            />
+
+            {#if account.admin && account.adminMail}
+              <Fa class="ml-3 h-4 w-4" icon={faInbox} title="receives email" />
+            {:else}
+              <p class="ml-3 h-4 w-4" />
+            {/if}
+          </div>
+        </td>
+      </tr>
+    {/each}
+  </tbody>
+</table>

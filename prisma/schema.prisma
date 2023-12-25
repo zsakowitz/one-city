@@ -16,6 +16,7 @@ model Account {
   updated  DateTime @updatedAt
 
   admin            Boolean   @default(false)
+  adminMail        Boolean   @default(false)
   currentChallenge String?
   currentSession   String    @unique
   email            String    @unique

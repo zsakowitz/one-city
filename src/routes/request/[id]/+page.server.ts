@@ -3,6 +3,8 @@ import {
   ONE_CITY_MAIL_RECEIVER_NAME,
 } from "$env/static/private"
 import { escape, RawHtml } from "$lib/escape.js"
+import { Account } from "$lib/server/account.js"
+import { query } from "$lib/server/database.js"
 import { extractFromFormData } from "$lib/server/extract.js"
 import { ItemRequest } from "$lib/server/item-request.js"
 import { send } from "$lib/server/mail.js"
@@ -104,11 +106,26 @@ export const actions = {
       await request.select({ id: true, name: true, uid: true })
     )
 
+    const emails = unwrapOr500(
+      await query((db) =>
+        db.account.findMany({
+          select: { email: true, nameFirst: true, nameLast: true },
+          where: { admin: true, adminMail: true },
+        })
+      )
+    )
+
     const result = await send({
-      to: {
-        address: ONE_CITY_MAIL_RECEIVER_ADDRESS,
-        name: ONE_CITY_MAIL_RECEIVER_NAME,
-      },
+      to:
+        emails.length == 0
+          ? {
+              address: ONE_CITY_MAIL_RECEIVER_ADDRESS,
+              name: ONE_CITY_MAIL_RECEIVER_NAME,
+            }
+          : emails.map(({ email, nameFirst, nameLast }) => ({
+              address: email,
+              name: `${nameFirst} ${nameLast}`,
+            })),
       subject: `OneCity: #${info.uid} – ${info.name}`,
 
       text: `${nameFirst} ${nameLast} may have "${info.name}".
@@ -135,7 +152,13 @@ ${description}`,
 <b>URL:</b> https://1city.zsnout.com/request/${info.id}
 
 <b>Item Description:</b>
-${description}`.replaceAll("\n", "<br/>"),
+${description}${
+        emails.length == 0
+          ? new RawHtml(
+              "\n\n<em>This fallback address is receiving mail because no admin is marked to receive emails.</em>"
+            )
+          : ""
+      }`.replaceAll("\n", "<br/>"),
 
       attachments: await Promise.all(
         images

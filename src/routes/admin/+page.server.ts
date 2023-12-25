@@ -27,6 +27,7 @@ export async function load(event: import("./$types.js").PageServerLoadEvent) {
         select: {
           id: true,
           admin: true,
+          adminMail: true,
           email: true,
           nameFirst: true,
           nameLast: true,
@@ -36,18 +37,21 @@ export async function load(event: import("./$types.js").PageServerLoadEvent) {
   )
 
   return {
-    accounts: allAccounts.map(({ id, admin, email, nameFirst, nameLast }) => ({
-      id,
-      admin,
-      email,
-      name: nameFirst + " " + nameLast,
-    })),
+    accounts: allAccounts.map(
+      ({ id, admin, adminMail, email, nameFirst, nameLast }) => ({
+        id,
+        admin,
+        adminMail,
+        email,
+        name: nameFirst + " " + nameLast,
+      })
+    ),
     id,
   }
 }
 
 export const actions = {
-  async toggleStatus(event) {
+  async set(event) {
     let myId: string
 
     if (event.locals.account) {
@@ -64,17 +68,24 @@ export const actions = {
       throw error(403, "You don't have permission to access this page.")
     }
 
-    const { id } = await extract(event.request, ["id"] as const)
+    const { id, admin, adminMail } = await extract(event.request, [
+      "id",
+      "admin",
+      "adminMail",
+    ] as const)
 
-    if (id == myId) {
+    if (id == myId && admin != "true") {
       throw error(400, "You can't remove yourself as an admin.")
     }
 
     const account = new Account({ id })
 
-    const { admin } = unwrapOr500(await account.select({ admin: true }))
-
-    unwrapOr500(await account.update({ admin: !admin }))
+    unwrapOr500(
+      await account.update({
+        admin: admin == "true",
+        adminMail: adminMail == "true",
+      })
+    )
 
     const allAccounts = unwrapOr500(
       await query((db) =>
@@ -82,6 +93,7 @@ export const actions = {
           select: {
             id: true,
             admin: true,
+            adminMail: true,
             email: true,
             nameFirst: true,
             nameLast: true,
@@ -92,9 +104,10 @@ export const actions = {
 
     return {
       accounts: allAccounts.map(
-        ({ id, admin, email, nameFirst, nameLast }) => ({
+        ({ id, admin, adminMail, email, nameFirst, nameLast }) => ({
           id,
           admin,
+          adminMail,
           email,
           name: nameFirst + " " + nameLast,
         })
