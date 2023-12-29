@@ -53,7 +53,7 @@
       <td class="text-z transition">Email</td>
       <td class="text-z transition">Toggle Admin</td>
       <td class="text-z transition">Toggle Mail</td>
-      <td class="text-z transition">Delete</td>
+      <td class="text-z transition">Delete Account</td>
       <td class="ml-auto pr-2 text-right text-z transition">Status</td>
     </tr>
   </thead>
