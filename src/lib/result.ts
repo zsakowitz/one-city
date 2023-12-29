@@ -85,6 +85,14 @@ export class Result<T> {
     }
   }
 
+  withError(error: string): Result<T> {
+    if (this.ok) {
+      return Result.ok(this.#value as T)
+    } else {
+      return Result.error(error)
+    }
+  }
+
   toJSON(): ResultJSON<T> {
     return this.ok
       ? { ok: true, value: this.#value as T }

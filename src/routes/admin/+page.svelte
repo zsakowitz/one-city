@@ -53,6 +53,7 @@
       <td class="text-z transition">Email</td>
       <td />
       <td />
+      <td />
       <td class="ml-auto pr-2 text-right text-z transition">Status</td>
     </tr>
   </thead>
@@ -71,12 +72,13 @@
         <td class="py-1">
           {#if account.admin}
             {#if account.id == data.id}
-              <em>cannot de-admin yourself</em>
+              <em>not allowed</em>
             {:else}
               <form action="?/set" method="post" use:enhance>
                 <input type="hidden" name="id" value={account.id} />
                 <input type="hidden" name="adminMail" value="false" />
                 <input type="hidden" name="admin" value="false" />
+                <input type="hidden" name="exists" value="true" />
 
                 <button class="underline underline-offset-2" type="submit">
                   Remove Admin
@@ -88,6 +90,7 @@
               <input type="hidden" name="id" value={account.id} />
               <input type="hidden" name="adminMail" value="false" />
               <input type="hidden" name="admin" value="true" />
+              <input type="hidden" name="exists" value="true" />
 
               <button class="underline underline-offset-2" type="submit">
                 Make Admin
@@ -102,6 +105,7 @@
               <input type="hidden" name="id" value={account.id} />
               <input type="hidden" name="adminMail" value="false" />
               <input type="hidden" name="admin" value="true" />
+              <input type="hidden" name="exists" value="true" />
 
               <button class="underline underline-offset-2" type="submit">
                 Stop Receiving Mail
@@ -112,9 +116,27 @@
               <input type="hidden" name="id" value={account.id} />
               <input type="hidden" name="adminMail" value="true" />
               <input type="hidden" name="admin" value="true" />
+              <input type="hidden" name="exists" value="true" />
 
               <button class="underline underline-offset-2" type="submit">
                 Receive Mail
+              </button>
+            </form>
+          {/if}
+        </td>
+
+        <td class="py-1">
+          {#if account.id == data.id}
+            <em>not allowed</em>
+          {:else}
+            <form action="?/set" method="post" use:enhance>
+              <input type="hidden" name="id" value={account.id} />
+              <input type="hidden" name="adminMail" value="false" />
+              <input type="hidden" name="admin" value="false" />
+              <input type="hidden" name="exists" value="false" />
+
+              <button class="underline underline-offset-2" type="submit">
+                Delete
               </button>
             </form>
           {/if}

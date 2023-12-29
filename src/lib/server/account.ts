@@ -36,11 +36,13 @@ export class Account {
           db.account.create({
             data: {
               currentSession: crypto.randomUUID(),
+              currentResetKey: crypto.randomUUID(),
               email: data.email,
               nameFirst: data.nameFirst,
               nameLast: data.nameLast,
-              verified: false,
               password: await hashPassword(data.password),
+              resetKeyExpiration: new Date(),
+              verified: false,
               verificationCode,
             },
           })
@@ -126,5 +128,9 @@ Thanks!
         where: this.filter,
       })
     )
+  }
+
+  delete() {
+    return query((db) => db.account.delete({ where: this.filter }))
   }
 }

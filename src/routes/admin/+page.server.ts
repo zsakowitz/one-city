@@ -32,6 +32,7 @@ export async function load(event: import("./$types.js").PageServerLoadEvent) {
           nameFirst: true,
           nameLast: true,
         },
+        orderBy: { email: "asc" },
       })
     )
   )
@@ -68,24 +69,35 @@ export const actions = {
       throw error(403, "You don't have permission to access this page.")
     }
 
-    const { id, admin, adminMail } = await extract(event.request, [
+    const { id, admin, adminMail, exists } = await extract(event.request, [
       "id",
       "admin",
       "adminMail",
+      "exists",
     ] as const)
 
-    if (id == myId && admin != "true") {
-      throw error(400, "You can't remove yourself as an admin.")
+    if (id == myId) {
+      if (exists != "true") {
+        throw error(400, "You can't delete your own account.")
+      }
+
+      if (admin != "true") {
+        throw error(400, "You can't remove yourself as an admin.")
+      }
     }
 
     const account = new Account({ id })
 
-    unwrapOr500(
-      await account.update({
-        admin: admin == "true",
-        adminMail: adminMail == "true",
-      })
-    )
+    if (exists == "true") {
+      unwrapOr500(
+        await account.update({
+          admin: admin == "true",
+          adminMail: adminMail == "true",
+        })
+      )
+    } else {
+      unwrapOr500(await account.delete())
+    }
 
     const allAccounts = unwrapOr500(
       await query((db) =>
@@ -98,6 +110,7 @@ export const actions = {
             nameFirst: true,
             nameLast: true,
           },
+          orderBy: { email: "asc" },
         })
       )
     )

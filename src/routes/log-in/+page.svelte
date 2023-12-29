@@ -26,6 +26,11 @@
 
   <button class="field mt-6 w-full">Log In</button>
 
+  <a
+    class="mt-6 block text-center text-z-link underline decoration-transparent underline-offset-2 hover:decoration-current focus-visible:decoration-current focus-visible:outline-none"
+    href="/reset-password">Forgot password?</a
+  >
+
   {#if form && !form.ok}
     <p class="mt-6 text-center">{form.reason}</p>
   {/if}

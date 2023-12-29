@@ -15,18 +15,19 @@ model Account {
   creation DateTime @default(now())
   updated  DateTime @updatedAt
 
-  admin            Boolean   @default(false)
-  adminMail        Boolean   @default(false)
-  currentChallenge String?
-  currentSession   String    @unique
-  email            String    @unique
-  password         String
-  nameFirst        String
-  nameLast         String
-  passkeys         Passkey[]
-
-  verified         Boolean
-  verificationCode String?
+  admin              Boolean   @default(false)
+  adminMail          Boolean   @default(false)
+  currentChallenge   String?
+  currentSession     String    @unique
+  currentResetKey    String    @unique
+  email              String    @unique
+  nameFirst          String
+  nameLast           String
+  passkeys           Passkey[]
+  password           String
+  resetKeyExpiration DateTime
+  verified           Boolean
+  verificationCode   String?
 }
 
 enum PasskeyTransport {
