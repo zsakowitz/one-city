@@ -51,9 +51,9 @@
     <tr>
       <td class="pl-2 text-z transition">Name</td>
       <td class="text-z transition">Email</td>
-      <td />
-      <td />
-      <td />
+      <td class="text-z transition">Toggle Admin</td>
+      <td class="text-z transition">Toggle Mail</td>
+      <td class="text-z transition">Delete</td>
       <td class="ml-auto pr-2 text-right text-z transition">Status</td>
     </tr>
   </thead>
