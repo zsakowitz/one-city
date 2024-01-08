@@ -184,7 +184,7 @@
       {/if}
 
       <form
-        class="flex w-full flex-1 flex-col gap-6 md:py-4 md:pl-8 md:shadow-[-15px_0_10px_-10px_rgba(0,0,0,0.1)]"
+        class="flex w-full flex-1 flex-col gap-6 pb-8 md:py-4 md:pl-8 md:shadow-[-15px_0_10px_-10px_rgba(0,0,0,0.1)]"
         method="post"
         action="?/email"
         use:enhance={() => {
