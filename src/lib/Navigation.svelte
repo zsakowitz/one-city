@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { faCity, faHome } from "@fortawesome/free-solid-svg-icons"
+  import { faHome } from "@fortawesome/free-solid-svg-icons"
   import Fa from "./Fa.svelte"
   import ThemeSwitcher from "./ThemeSwitcher.svelte"
 

@@ -16,11 +16,25 @@
 </div>
 
 {#if data && data.name}
-  <p
+  <form
     class="mx-auto mb-4 w-[36rem] max-w-full rounded-lg bg-z-body-selected px-8 py-4 text-center text-lg font-light text-z transition"
+    method="post"
+    action="/log-out"
   >
     Welcome, {data.name}!
-  </p>
+
+    <button
+      class="inline flex-1 items-center justify-center whitespace-nowrap rounded-lg border border-transparent px-2 py-0.5 text-center text-sm font-normal italic text-z underline decoration-transparent decoration-1 underline-offset-2 ring-z-focus transition hover:decoration-current focus-visible:border-z-focus focus-visible:outline-none focus-visible:ring"
+      type="submit">(log out)</button
+    >
+  </form>
+{:else}
+  <a
+    class="mx-auto mb-4 block w-[36rem] max-w-full rounded-lg bg-z-body-selected px-8 py-4 text-center text-lg font-light text-z transition sm:hidden"
+    href="/log-in"
+  >
+    Log In
+  </a>
 {/if}
 
 <div class="mx-auto w-[32rem] max-w-full">
