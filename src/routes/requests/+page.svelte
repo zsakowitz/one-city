@@ -11,6 +11,7 @@
   import Request from "./Request.svelte"
   import UrgencyFilter from "./UrgencyFilter.svelte"
   import SizeFilter from "./SizeFilter.svelte"
+  import RawRequest from "./RawRequest.svelte"
 
   let sizeFilter: "sm" | "md" | "lg" | undefined
   let urgencyFilter: 1 | 2 | 3 | undefined
@@ -208,151 +209,163 @@
   <SizeFilter bind:size={sizeFilter} />
 
   {#if data.admin}
-    <a class="field field-modern ml-auto" href="/request/create"
-      >Create Request</a
-    >
+    <a class="field field-modern ml-auto" href="/request/create">
+      <span class="hidden xs:block">Create Request</span>
+      <span class="block xs:hidden">New</span>
+    </a>
   {/if}
 </div>
 
 <div class="flex flex-col gap-1">
-  {#if visibleRequests.length}
-    <div
-      class="relative grid grid-cols-[2rem,minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem,4rem] items-center gap-8 overflow-hidden rounded px-2 py-1 font-semibold transition first:rounded-t-xl last:rounded-b-xl"
+  <RawRequest
+    href={undefined}
+    showSize={sizeFilter == null}
+    showUrgency={urgencyFilter == null}
+  >
+    <button
+      class="relative flex items-center text-left text-z transition [&_b]:text-z-heading"
+      on:click={makeSorter("uid")}
+      slot="id"
     >
-      <button
-        class="relative flex items-center text-left text-z transition [&_b]:text-z-heading"
-        on:click={makeSorter("uid")}
-      >
-        ID
+      ID
 
-        {#if sortingField == "uid"}
-          <Fa
-            class="ml-2 h-4 w-4"
-            icon={sortingDirection == "dsc"
-              ? faSortAlphaUpAlt
-              : faSortAlphaDown}
-            title="Sorting direction"
-          />
-        {:else}
-          <div class="ml-2 h-4 w-4" />
-        {/if}
-      </button>
+      {#if sortingField == "uid"}
+        <Fa
+          class="ml-2 h-4 w-4"
+          icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
+          title="Sorting direction"
+        />
+      {:else}
+        <div class="ml-2 h-4 w-4" />
+      {/if}
+    </button>
 
-      <button
-        class="relative flex items-center text-left text-z transition [&_b]:text-z-heading"
-        on:click={makeSorter("name")}
-      >
-        Item
+    <button
+      class="relative flex items-center text-left text-z transition [&_b]:text-z-heading"
+      on:click={makeSorter("name")}
+      slot="name"
+    >
+      Item
 
-        {#if sortingField == "name"}
-          <Fa
-            class="ml-2 h-4 w-4"
-            icon={sortingDirection == "dsc"
-              ? faSortAlphaUpAlt
-              : faSortAlphaDown}
-            title="Sorting direction"
-          />
-        {:else}
-          <div class="ml-2 h-4 w-4" />
-        {/if}
-      </button>
+      {#if sortingField == "name"}
+        <Fa
+          class="ml-2 h-4 w-4"
+          icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
+          title="Sorting direction"
+        />
+      {:else}
+        <div class="ml-2 h-4 w-4" />
+      {/if}
+    </button>
 
-      <button
-        class="flex items-center whitespace-nowrap text-left text-z transition"
-        on:click={makeSorter("requester")}
-      >
-        Requester
+    <button
+      class="flex items-center whitespace-nowrap text-left text-z transition"
+      on:click={makeSorter("requester")}
+      slot="requester"
+    >
+      Requester
 
-        {#if sortingField == "requester"}
-          <Fa
-            class="ml-2 h-4 w-4"
-            icon={sortingDirection == "dsc"
-              ? faSortAlphaUpAlt
-              : faSortAlphaDown}
-            title="Sorting direction"
-          />
-        {:else}
-          <div class="ml-2 h-4 w-4" />
-        {/if}
-      </button>
+      {#if sortingField == "requester"}
+        <Fa
+          class="ml-2 h-4 w-4"
+          icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
+          title="Sorting direction"
+        />
+      {:else}
+        <div class="ml-2 h-4 w-4" />
+      {/if}
+    </button>
 
-      <button
-        class="flex items-center whitespace-nowrap text-left text-z transition"
-        on:click={makeSorter("creation")}
-      >
-        Date Requested
+    <button
+      class="flex items-center whitespace-nowrap text-left text-z transition"
+      on:click={makeSorter("creation")}
+      slot="date-long"
+    >
+      Date Requested
 
-        {#if sortingField == "creation"}
-          <Fa
-            class="ml-2 h-4 w-4"
-            icon={sortingDirection == "dsc"
-              ? faSortAlphaUpAlt
-              : faSortAlphaDown}
-            title="Sorting direction"
-          />
-        {:else}
-          <div class="ml-2 h-4 w-4" />
-        {/if}
-      </button>
+      {#if sortingField == "creation"}
+        <Fa
+          class="ml-2 h-4 w-4"
+          icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
+          title="Sorting direction"
+        />
+      {:else}
+        <div class="ml-2 h-4 w-4" />
+      {/if}
+    </button>
 
-      <button
-        class="flex items-center whitespace-nowrap text-right text-z transition"
-        on:click={makeSorter("size")}
-      >
-        {sizeFilter == null ? "Size" : ""}
+    <button
+      class="flex items-center whitespace-nowrap text-left text-z transition"
+      on:click={makeSorter("creation")}
+      slot="date-short"
+    >
+      Date
 
-        {#if sortingField == "size" && sizeFilter == null}
-          <Fa
-            class="ml-2 h-4 w-4"
-            icon={sortingDirection == "dsc"
-              ? faSortAlphaUpAlt
-              : faSortAlphaDown}
-            title="Sorting direction"
-          />
-        {:else}
-          <div class="ml-2 h-4 w-4" />
-        {/if}
-      </button>
+      {#if sortingField == "creation"}
+        <Fa
+          class="ml-2 h-4 w-4"
+          icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
+          title="Sorting direction"
+        />
+      {:else}
+        <div class="ml-2 h-4 w-4" />
+      {/if}
+    </button>
 
-      <button
-        class="flex items-center whitespace-nowrap text-right text-z transition"
-        on:click={makeSorter("urgency")}
-      >
-        {urgencyFilter == null ? "Urgency" : ""}
+    <button
+      class="flex items-center whitespace-nowrap text-right text-z transition"
+      on:click={makeSorter("size")}
+      slot="size"
+    >
+      {sizeFilter == null ? "Size" : ""}
 
-        {#if sortingField == "urgency" && urgencyFilter == null}
-          <Fa
-            class="ml-2 h-4 w-4"
-            icon={sortingDirection == "dsc"
-              ? faSortAlphaUpAlt
-              : faSortAlphaDown}
-            title="Sorting direction"
-          />
-        {:else}
-          <div class="ml-2 h-4 w-4" />
-        {/if}
-      </button>
+      {#if sortingField == "size" && sizeFilter == null}
+        <Fa
+          class="ml-2 h-4 w-4"
+          icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
+          title="Sorting direction"
+        />
+      {:else}
+        <div class="ml-2 h-4 w-4" />
+      {/if}
+    </button>
 
-      <button
-        class="flex items-center whitespace-nowrap text-right text-z transition"
-        on:click={makeSorter("completed")}
-      >
-        Status
+    <button
+      class="flex items-center whitespace-nowrap text-right text-z transition"
+      on:click={makeSorter("urgency")}
+      slot="urgency"
+    >
+      {urgencyFilter == null ? "Urgency" : ""}
 
-        {#if sortingField == "completed"}
-          <Fa
-            class="ml-2 h-4 w-4"
-            icon={sortingDirection == "dsc"
-              ? faSortAlphaUpAlt
-              : faSortAlphaDown}
-            title="Sorting direction"
-          />
-        {:else}
-          <div class="ml-2 h-4 w-4" />
-        {/if}
-      </button>
-    </div>
-  {/if}
+      {#if sortingField == "urgency" && urgencyFilter == null}
+        <Fa
+          class="ml-2 h-4 w-4"
+          icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
+          title="Sorting direction"
+        />
+      {:else}
+        <div class="ml-2 h-4 w-4" />
+      {/if}
+    </button>
+
+    <button
+      class="flex items-center whitespace-nowrap text-right text-z transition"
+      on:click={makeSorter("completed")}
+      slot="status"
+    >
+      Status
+
+      {#if sortingField == "completed"}
+        <Fa
+          class="ml-2 h-4 w-4"
+          icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
+          title="Sorting direction"
+        />
+      {:else}
+        <div class="ml-2 h-4 w-4" />
+      {/if}
+    </button>
+  </RawRequest>
 
   {#each visibleRequests as request}
     <Request
@@ -362,7 +375,7 @@
     />
   {:else}
     <p
-      class="mt-9 text-center [text-wrap:balance] bg-z-body-selected rounded-md px-3 py-1"
+      class="mt-9 text-center [text-wrap:balance] bg-z-body-selected rounded-xl px-3 py-1"
     >
       {#if query || urgencyFilter || sizeFilter}
         No items matched. Try adjusting your search query and filters.

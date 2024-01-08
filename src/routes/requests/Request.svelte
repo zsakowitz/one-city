@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { ItemRequestJSON } from "$lib/server/item-request"
+  import RawRequest from "./RawRequest.svelte"
   import Size from "./Size.svelte"
 
   export let request: ItemRequestJSON
@@ -7,37 +8,40 @@
   export let showUrgency: boolean
 </script>
 
-<a
-  href={"/request/" + request.id}
-  class="relative grid grid-cols-[2rem,minmax(0,2fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem,4rem] items-center gap-8 overflow-hidden rounded bg-z-body-selected px-2 py-1 transition last:rounded-b-xl [&:nth-child(2)]:rounded-t-xl"
->
-  <p class="relative text-z transition">
+<RawRequest href={"/request/" + request.id} {showSize} {showUrgency}>
+  <svelte:fragment slot="id">
     {request.uid.toString().padStart(3, "0")}
-  </p>
+  </svelte:fragment>
 
-  <p class="relative text-z transition">
+  <svelte:fragment slot="name">
     {@html request.nameHTML}
-  </p>
+  </svelte:fragment>
 
-  <p class="text-z transition">
+  <svelte:fragment slot="requester">
     {@html request.requesterHTML}
-  </p>
+  </svelte:fragment>
 
-  <p class="text-z transition">
+  <svelte:fragment slot="date-long">
     {new Date(request.creation).toLocaleDateString(undefined, {
       month: "short",
       day: "numeric",
       year: "numeric",
     })}
-  </p>
+  </svelte:fragment>
 
-  {#if showSize}
-    <Size class="relative ml-auto h-4 w-4" size={request.size} />
-  {:else}
-    <span />
-  {/if}
+  <svelte:fragment slot="date-short">
+    {new Date(request.creation).toLocaleDateString(undefined, {
+      month: "2-digit",
+      day: "2-digit",
+      year: "2-digit",
+    })}
+  </svelte:fragment>
 
-  {#if showUrgency}
+  <svelte:fragment slot="size">
+    <Size class="relative my-auto ml-auto h-4 w-4" size={request.size} />
+  </svelte:fragment>
+
+  <svelte:fragment slot="urgency">
     <span
       class="text-right font-medium {request.urgency == 1
         ? 'text-red-600 dark:text-red-500'
@@ -50,12 +54,14 @@
         ? "Medium"
         : "Low"}</span
     >
-  {/if}
+  </svelte:fragment>
 
-  <span
-    class="text-right font-medium {request.completed == null
-      ? 'text-red-600 dark:text-red-500'
-      : 'text-green-600 dark:text-green-500'}"
-    >{request.completed == null ? "Active" : "Done"}
-  </span>
-</a>
+  <svelte:fragment slot="status">
+    <span
+      class="text-right font-medium {request.completed == null
+        ? 'text-red-600 dark:text-red-500'
+        : 'text-green-600 dark:text-green-500'}"
+      >{request.completed == null ? "Active" : "Done"}
+    </span>
+  </svelte:fragment>
+</RawRequest>
