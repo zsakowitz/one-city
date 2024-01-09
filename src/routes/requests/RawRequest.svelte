@@ -14,7 +14,7 @@
   class:lg:grid-cols-[7rem,2rem,minmax(0,1.5fr),minmax(0,1fr),4rem,6rem,5rem]={isViewedByAdmin}
 >
   <div
-    class="grid w-full grid-cols-[4rem,4rem,minmax(0,1fr)] gap-4 xs:grid-cols-[7rem,4rem,minmax(0,1fr)] md:contents"
+    class="grid w-full grid-cols-[4rem,5rem,minmax(0,1fr)] gap-4 xs:grid-cols-[7rem,5rem,minmax(0,1fr)] md:contents"
   >
     <p class="hidden text-z transition xs:block">
       <slot name="date-long" />
@@ -40,7 +40,7 @@
   </div>
 
   <div
-    class="mt-1 grid w-full grid-cols-[4rem,4rem,minmax(0,1fr)] gap-4 border-t border-dashed pt-1 xs:grid-cols-[7rem,4rem,minmax(0,1fr)] md:contents"
+    class="mt-1 grid w-full grid-cols-[4rem,5rem,minmax(0,1fr)] gap-4 border-t border-dashed pt-1 xs:grid-cols-[7rem,5rem,minmax(0,1fr)] md:contents"
     class:border-t-z={!href}
     class:border-t-z-bg-body={href}
   >
