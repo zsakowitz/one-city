@@ -11,10 +11,12 @@
   const { id, isAdmin } = data
   const request = form?.json || data.request
 
-  let email = ""
+  let formState: "unsent" | "sending" | "sent" = "unsent"
   let tel = ""
 
-  let formState: "unsent" | "sending" | "sent" = "unsent"
+  let contactByEmail = true
+  let contactByCall = false
+  let contactByText = false
 </script>
 
 {#if request}
@@ -196,7 +198,7 @@
           }
         }}
       >
-        <p class="mb-6 text-center text-sm text-z-subtitle">
+        <p class="mb-6 text-center text-sm text-z-subtitle [text-wrap:balance]">
           <span class="inline xs:block lg:inline">Do you have this item?</span>
 
           <span class="inline xs:block lg:inline"
@@ -238,13 +240,26 @@
             name="email"
             type="text"
             autocomplete="email"
-            bind:value={email}
             required
           />
         </label>
 
         <label class="label">
-          <p>Your phone number</p>
+          <p class="hidden xs:block">
+            Your phone number {contactByCall
+              ? "(required to call you)"
+              : contactByText
+              ? "(required to text you)"
+              : "(optional)"}
+          </p>
+
+          <p class="block xs:hidden">
+            Your phone number {contactByCall
+              ? "(required to call)"
+              : contactByText
+              ? "(required to text)"
+              : "(optional)"}
+          </p>
 
           <input
             class="field w-full"
@@ -253,12 +268,88 @@
             autocomplete="tel"
             pattern={"^[\\+]*[\\(]?\\d{3}[\\)]?[\\-\\s\\.\\/0-9]{7}$"}
             bind:value={tel}
-            required={!email}
+            required={contactByCall || contactByText}
           />
         </label>
 
         <label class="label">
-          <p>Images of your item</p>
+          <p>Item pickup address</p>
+
+          <input
+            class="field w-full"
+            name="pickup_address"
+            type="text"
+            autocomplete="street-address"
+            required
+          />
+        </label>
+
+        <label class="label">
+          <p>Item pickup city</p>
+
+          <input
+            class="field w-full"
+            name="pickup_city"
+            type="text"
+            autocomplete="address-level2"
+            required
+          />
+        </label>
+
+        <label class="label">
+          <p>Best time to reach you</p>
+
+          <input class="field w-full" name="best_time" type="time" required />
+        </label>
+
+        <div class="label">
+          <p>Preferred mode(s) of contact</p>
+
+          <div class="field flex select-none gap-0.5 p-0.5">
+            <label
+              class="flex-1 cursor-pointer rounded-l-md rounded-r-sm px-2 py-1 text-center font-mono text-sm lowercase text-z transition"
+              class:bg-z-body-selected={contactByEmail}
+            >
+              <input
+                class="sr-only"
+                type="checkbox"
+                name="contact_email"
+                bind:checked={contactByEmail}
+                required={!(contactByCall || contactByText)}
+              />
+              Email
+            </label>
+
+            <label
+              class="flex-1 cursor-pointer rounded-sm px-2 py-1 text-center font-mono text-sm lowercase text-z transition"
+              class:bg-z-body-selected={contactByCall}
+            >
+              <input
+                class="sr-only"
+                type="checkbox"
+                name="contact_call"
+                bind:checked={contactByCall}
+              />
+              Call
+            </label>
+
+            <label
+              class="flex-1 cursor-pointer rounded-l-sm rounded-r-md px-2 py-1 text-center font-mono text-sm lowercase text-z transition"
+              class:bg-z-body-selected={contactByText}
+            >
+              <input
+                class="sr-only"
+                type="checkbox"
+                name="contact_text"
+                bind:checked={contactByText}
+              />
+              Text
+            </label>
+          </div>
+        </div>
+
+        <label class="label">
+          <p>A picture of what <em>you</em> have</p>
 
           <input
             class="field w-full text-sm"

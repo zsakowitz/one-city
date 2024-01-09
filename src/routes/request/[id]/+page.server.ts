@@ -83,14 +83,32 @@ export const actions = {
 
     const data = await req.formData()
 
-    const { description, email, nameFirst, nameLast, tel } =
-      extractFromFormData(data, [
+    const {
+      description,
+      email,
+      nameFirst,
+      nameLast,
+      tel,
+      pickup_address: pickupAddress,
+      pickup_city: pickupCity,
+      best_time: bestTime,
+      contact_email: contactEmail,
+      contact_call: contactCall,
+      contact_text: contactText,
+    } = extractFromFormData(
+      data,
+      [
         "description",
         "email",
         "nameFirst",
         "nameLast",
         "tel",
-      ] as const)
+        "pickup_address",
+        "pickup_city",
+        "best_time",
+      ] as const,
+      ["contact_email", "contact_call", "contact_text"] as const
+    )
 
     const imagesDatas = data.getAll("images").filter((x) => x)
 
@@ -114,6 +132,16 @@ export const actions = {
         })
       )
     )
+
+    // prettier-ignore
+    const prefers =
+      contactEmail
+        ? contactCall
+          ? contactText ? "any method of contact" : "an email or phone call"
+          : contactText ? "an email or text message" : "an email"
+        : contactCall
+          ? contactText ? "a phone call or text message" : "a phone call"
+          : contactText ? "a text message" : "unspecified method of contact"
 
     const result = await send({
       to:
@@ -144,12 +172,14 @@ ${description}`,
 
 <b>ID:</b> ${info.uid}
 <b>Item:</b> ${info.name}
+<b>URL:</b> https://1city.zsnout.com/request/${info.id}
 
 <b>Name:</b> ${nameFirst} ${nameLast}
-<b>Email:</b> ${email}${
-        tel ? new RawHtml(escape`\n<b>Phone Number:</b> ${tel}`) : ""
-      }
-<b>URL:</b> https://1city.zsnout.com/request/${info.id}
+<b>Email:</b> ${email}
+<b>Phone Number:</b> ${tel ? tel : "not shared"}
+<b>Prefers:</b> ${prefers}
+<b>Contact At:</b> ${bestTime}
+<b>Pick Up Item At:</b> ${pickupAddress}, ${pickupCity}
 
 <b>Item Description:</b>
 ${description}${
