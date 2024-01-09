@@ -1,14 +1,19 @@
 <script lang="ts">
   import type { ItemRequestJSON } from "$lib/server/item-request"
   import RawRequest from "./RawRequest.svelte"
-  import Size from "./Size.svelte"
 
   export let request: ItemRequestJSON
   export let showSize: boolean
   export let showUrgency: boolean
+  export let isViewedByAdmin: boolean
 </script>
 
-<RawRequest href={"/request/" + request.id} {showSize} {showUrgency}>
+<RawRequest
+  href={"/request/" + request.id}
+  {showSize}
+  {showUrgency}
+  {isViewedByAdmin}
+>
   <svelte:fragment slot="id">
     {request.uid.toString().padStart(3, "0")}
   </svelte:fragment>
@@ -38,12 +43,18 @@
   </svelte:fragment>
 
   <svelte:fragment slot="size">
-    <Size class="relative my-auto ml-auto h-4 w-4" size={request.size} />
+    <span class="text-z"
+      >{request.size == "sm"
+        ? "Small"
+        : request.size == "md"
+        ? "Medium"
+        : "Large"}</span
+    >
   </svelte:fragment>
 
   <svelte:fragment slot="urgency">
     <span
-      class="text-right font-medium {request.urgency == 1
+      class="font-medium {request.urgency == 1
         ? 'text-red-600 dark:text-red-500'
         : request.urgency == 2
         ? 'text-orange-600 dark:text-orange-500'
@@ -51,14 +62,14 @@
       >{request.urgency == 1
         ? "High"
         : request.urgency == 2
-        ? "Medium"
+        ? "Mid"
         : "Low"}</span
     >
   </svelte:fragment>
 
   <svelte:fragment slot="status">
     <span
-      class="text-right font-medium {request.completed == null
+      class="font-medium {request.completed == null
         ? 'text-red-600 dark:text-red-500'
         : 'text-green-600 dark:text-green-500'}"
       >{request.completed == null ? "Active" : "Done"}

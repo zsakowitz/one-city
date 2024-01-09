@@ -4,14 +4,15 @@
   import type { ItemRequestJSON } from "$lib/server/item-request"
   import {
     faSortAlphaDown,
+    faSortAlphaUp,
     faSortAlphaUpAlt,
   } from "@fortawesome/free-solid-svg-icons"
   import fuzzy from "fuzzysort"
   import type { PageData } from "./$types"
-  import Request from "./Request.svelte"
-  import UrgencyFilter from "./UrgencyFilter.svelte"
-  import SizeFilter from "./SizeFilter.svelte"
   import RawRequest from "./RawRequest.svelte"
+  import Request from "./Request.svelte"
+  import SizeFilter from "./SizeFilter.svelte"
+  import UrgencyFilter from "./UrgencyFilter.svelte"
 
   let sizeFilter: "sm" | "md" | "lg" | undefined
   let urgencyFilter: 1 | 2 | 3 | undefined
@@ -221,6 +222,7 @@
     href={undefined}
     showSize={sizeFilter == null}
     showUrgency={urgencyFilter == null}
+    isViewedByAdmin={data.admin}
   >
     <button
       class="relative flex items-center text-left text-z transition [&_b]:text-z-heading"
@@ -232,7 +234,7 @@
       {#if sortingField == "uid"}
         <Fa
           class="ml-2 h-4 w-4"
-          icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
+          icon={sortingDirection == "dsc" ? faSortAlphaUp : faSortAlphaDown}
           title="Sorting direction"
         />
       {:else}
@@ -281,7 +283,7 @@
       on:click={makeSorter("creation")}
       slot="date-long"
     >
-      Date Requested
+      Requested
 
       {#if sortingField == "creation"}
         <Fa
@@ -313,7 +315,7 @@
     </button>
 
     <button
-      class="flex items-center whitespace-nowrap text-right text-z transition"
+      class="flex items-center whitespace-nowrap text-z transition"
       on:click={makeSorter("size")}
       slot="size"
     >
@@ -325,13 +327,11 @@
           icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
           title="Sorting direction"
         />
-      {:else}
-        <div class="ml-2 h-4 w-4" />
       {/if}
     </button>
 
     <button
-      class="flex items-center whitespace-nowrap text-right text-z transition"
+      class="flex items-center whitespace-nowrap text-z transition"
       on:click={makeSorter("urgency")}
       slot="urgency"
     >
@@ -343,13 +343,11 @@
           icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
           title="Sorting direction"
         />
-      {:else}
-        <div class="ml-2 h-4 w-4" />
       {/if}
     </button>
 
     <button
-      class="flex items-center whitespace-nowrap text-right text-z transition"
+      class="flex items-center whitespace-nowrap text-z transition"
       on:click={makeSorter("completed")}
       slot="status"
     >
@@ -361,8 +359,6 @@
           icon={sortingDirection == "dsc" ? faSortAlphaUpAlt : faSortAlphaDown}
           title="Sorting direction"
         />
-      {:else}
-        <div class="ml-2 h-4 w-4" />
       {/if}
     </button>
   </RawRequest>
@@ -372,10 +368,11 @@
       {request}
       showSize={sizeFilter == null}
       showUrgency={urgencyFilter == null}
+      isViewedByAdmin={data.admin}
     />
   {:else}
     <p
-      class="mt-9 text-center [text-wrap:balance] bg-z-body-selected rounded-xl px-3 py-1"
+      class="text-center [text-wrap:balance] bg-z-body-selected rounded-xl px-3 py-1"
     >
       {#if query || urgencyFilter || sizeFilter}
         No items matched. Try adjusting your search query and filters.

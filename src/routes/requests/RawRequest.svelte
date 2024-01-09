@@ -2,37 +2,19 @@
   export let href: string | undefined
   export let showSize: boolean
   export let showUrgency: boolean
+  export let isViewedByAdmin: boolean
 </script>
 
 <svelte:element
   this={href ? "a" : "div"}
   {href}
-  class="relative flex flex-col items-center gap-x-8 gap-y-0 overflow-hidden rounded px-2 py-1 transition last:rounded-b-xl md:grid md:grid-cols-[2rem,minmax(0,1.5fr),minmax(0,1fr),minmax(0,9rem),3rem,5rem,4rem] [&:nth-child(2)]:rounded-t-xl"
+  class="relative flex grid-cols-[7rem,2rem,minmax(0,1fr),4rem,6rem,5rem] flex-col items-center gap-x-8 gap-y-0 overflow-hidden rounded px-2 py-1 transition last:rounded-b-xl md:grid [&:nth-child(2)]:rounded-t-xl"
   class:bg-z-body-selected={href}
   class:font-semibold={!href}
+  class:lg:grid-cols-[7rem,2rem,minmax(0,1.5fr),minmax(0,1fr),4rem,6rem,5rem]={isViewedByAdmin}
 >
   <div
-    class="flex w-full xs:grid xs:grid-cols-[2rem,minmax(0,1.5fr),minmax(0,1fr)] md:contents"
-  >
-    <p class="relative w-8 text-z transition">
-      <slot name="id" />
-    </p>
-
-    <p class="relative mx-4 text-z transition xs:mx-8 md:mx-0">
-      <slot name="name" />
-    </p>
-
-    <div class="flex-1 xs:hidden" />
-
-    <p class="text-z transition">
-      <slot name="requester" />
-    </p>
-  </div>
-
-  <div
-    class="mt-1 grid w-full grid-cols-[4rem,3rem,minmax(0,1fr),minmax(0,1fr)] gap-4 border-t border-dashed pt-1 xs:grid-cols-[8rem,3rem,minmax(0,1fr),minmax(0,1fr)] md:contents"
-    class:border-t-z={!href}
-    class:border-t-z-bg-body={href}
+    class="grid w-full grid-cols-[4rem,4rem,minmax(0,1fr)] gap-4 xs:grid-cols-[7rem,4rem,minmax(0,1fr)] md:contents"
   >
     <p class="hidden text-z transition xs:block">
       <slot name="date-long" />
@@ -42,6 +24,26 @@
       <slot name="date-short" />
     </p>
 
+    <p class="relative w-8 text-z transition">
+      <slot name="id" />
+    </p>
+
+    <p class="relative text-z transition">
+      <slot name="name" />
+    </p>
+
+    {#if isViewedByAdmin}
+      <p class="hidden text-z transition lg:block">
+        <slot name="requester" />
+      </p>
+    {/if}
+  </div>
+
+  <div
+    class="mt-1 grid w-full grid-cols-[4rem,4rem,minmax(0,1fr)] gap-4 border-t border-dashed pt-1 xs:grid-cols-[7rem,4rem,minmax(0,1fr)] md:contents"
+    class:border-t-z={!href}
+    class:border-t-z-bg-body={href}
+  >
     {#if showSize}
       <slot name="size" />
     {:else}
@@ -50,6 +52,8 @@
 
     {#if showUrgency}
       <slot name="urgency" />
+    {:else}
+      <span />
     {/if}
 
     <slot name="status" />
