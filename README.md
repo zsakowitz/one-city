@@ -16,16 +16,16 @@ npm run dev --open
 
 ## To Do
 
-- [ ] Color requests on dashboard based on status.
-- [ ] Autocomplete location.
-- [ ] Color buttons like Edit, Delete, Mark as Completed, Mark as Active, Send
+- [x] Color requests on dashboard based on status.
+- [x] Autocomplete location.
+- [x] Color buttons like Edit, Delete, Mark as Completed, Mark as Active, Send
       It
-- [ ] The urgency icon, arrow up and arrow down, are not intuitive. Instead,
+- [x] The urgency icon, arrow up and arrow down, are not intuitive. Instead,
       just use “High,” “Medium,” and “Low.” They also need to be colored with
       perhaps red, orange, and yellow respectively.
-- [ ] Address field should also be broken into Address, City, State, and Zip,
+- [x] Address field should also be broken into Address, City, State, and Zip,
       which are what typically see on any websites.
-- [ ] After a form is submitted, instead of using pop-up to show the form
+- [x] After a form is submitted, instead of using pop-up to show the form
       submission status, we should have the status reflected on the page.
 
 ## Completed
