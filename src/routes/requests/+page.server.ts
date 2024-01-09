@@ -23,5 +23,14 @@ export async function load(event: Parameters<PageServerLoad>[0]) {
     ))
   }
 
+  if (!admin) {
+    for (const entry of json) {
+      entry.requester = ""
+      entry.requesterFirst = ""
+      entry.requesterLast = ""
+      entry.requesterHTML = ""
+    }
+  }
+
   return { admin, completed, list: json }
 }
