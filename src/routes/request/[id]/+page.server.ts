@@ -178,7 +178,13 @@ ${description}`,
 <b>Email:</b> ${email}
 <b>Phone Number:</b> ${tel ? tel : "not shared"}
 <b>Prefers:</b> ${prefers}
-<b>Contact At:</b> ${bestTime}
+<b>Contact At:</b> ${bestTime.replace(/^(\d\d):(\d\d)$/, (_, hour, minute) => {
+        if (+hour <= 12) {
+          return hour + ":" + minute + "am"
+        } else {
+          return +hour - 12 + ":" + minute + "pm"
+        }
+      })}
 <b>Pick Up Item At:</b> ${pickupAddress}, ${pickupCity}
 
 <b>Item Description:</b>
