@@ -95,6 +95,8 @@ export const actions = {
       contact_email: contactEmail,
       contact_call: contactCall,
       contact_text: contactText,
+      transport_self: transportBySelf,
+      transport_hire: transportByHire,
     } = extractFromFormData(
       data,
       [
@@ -107,7 +109,13 @@ export const actions = {
         "pickup_city",
         "best_time",
       ] as const,
-      ["contact_email", "contact_call", "contact_text"] as const
+      [
+        "contact_email",
+        "contact_call",
+        "contact_text",
+        "transport_self",
+        "transport_hire",
+      ] as const
     )
 
     const imagesDatas = data.getAll("images").filter((x) => x)
@@ -142,6 +150,12 @@ export const actions = {
         : contactCall
           ? contactText ? "a phone call or text message" : "a phone call"
           : contactText ? "a text message" : "unspecified method of contact"
+
+    // prettier-ignore
+    const transport =
+      transportBySelf
+        ? transportByHire ? "can drive or hire a worker" : "can drive item"
+        : transportByHire ? "can hire a worker" : "does not want to drive or hire a worker"
 
     const result = await send({
       to:
@@ -186,6 +200,7 @@ ${description}`,
         }
       })}
 <b>Pick Up Item At:</b> ${pickupAddress}, ${pickupCity}
+<b>Transport Options:</b> ${transport}
 
 <b>Item Description:</b>
 ${description}${

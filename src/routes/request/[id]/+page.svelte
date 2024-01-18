@@ -17,6 +17,9 @@
   let contactByEmail = true
   let contactByCall = false
   let contactByText = false
+
+  let transportBySelf = false
+  let transportByHire = false
 </script>
 
 {#if request}
@@ -347,6 +350,46 @@
             </label>
           </div>
         </div>
+
+        <div class="label">
+          <p>Transport options (optional)</p>
+
+          <div class="field flex select-none gap-0.5 p-0.5">
+            <label
+              class="flex-1 cursor-pointer rounded-l-md rounded-r-sm px-2 py-1 text-center font-mono text-sm lowercase text-z transition"
+              class:bg-z-body-selected={transportBySelf}
+            >
+              <input
+                class="sr-only"
+                type="checkbox"
+                name="transport_self"
+                bind:checked={transportBySelf}
+              />
+              by myself
+            </label>
+
+            <label
+              class="flex-1 cursor-pointer rounded-sm px-2 py-1 text-center font-mono text-sm lowercase text-z transition"
+              class:bg-z-body-selected={transportByHire}
+            >
+              <input
+                class="sr-only"
+                type="checkbox"
+                name="transport_hire"
+                bind:checked={transportByHire}
+              />
+              by hiring
+            </label>
+          </div>
+        </div>
+
+        <p class="-mt-4 mb-2 text-sm text-z-subtitle">
+          If you check "by myself", you will be responsible for driving and
+          transporting this item to a client in need. If you check "by hiring",
+          you will be responsible for paying a Lugg/<wbr />Thumbtack/<wbr
+          />Taskrabbit person to transport it (around $100 for midsize/<wbr
+          />large items). You may check one, none, or both.
+        </p>
 
         <label class="label">
           <p>A picture of what <em>you</em> have</p>
